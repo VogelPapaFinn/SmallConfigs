@@ -19,8 +19,10 @@
   </ul>
   <i>Eine genaue Beschreibung zu den Funktionen findest du weiter unten.</i>
   <br/>
+  <br/>
   Diese erklären sich eigentlich durch den Namen und durch evt. Parameter. So öffnet der Constructor beispielsweise die Datei im 
   angegebenen Modus. Dafür gibt es eine kleine enum im Header:
+  <br/>
   <code>
   enum MODE
   { 
@@ -28,22 +30,31 @@
 	  FILE_WRITE = std::ios::out
   };
   </code>
+  <br/>
   Wie du siehst, gibt es hier [bisher] nur die Möglichkeit zu lesen und zu schreiben. Wahrscheinlich werden in der Zukunft neue 
   Modi dazu kommen, also einfach mal die Augen offen halten!
   <br/>
-  <code>std::string getValueOfAttribute(std::string attribute);/code>
+  <code>
+	std::string getValueOfAttribute(std::string attribute)
+  </code>
   <br/>
   und
   <br/>
-  <code>bool setValueOfAttribute(std::string attribute, std::string value)</code>
+  <code>
+	bool setValueOfAttribute(std::string attribute, std::string value)
+  </code>
   <br/>
   sollten sich auch von selbst erklären! Und zu guter letzt:
   <br/>
-  <code>bool open(std::string file_directory)</code>
+  <code>
+	bool open(std::string file_directory)
+  </code>
   <br/>
   und
   <br/>
-  <code>void close()</code>
+  <code>
+	void close()
+  </code>
   <br/>
   öffnen bzw. schließen die aktuelle Datei.
 </p>
