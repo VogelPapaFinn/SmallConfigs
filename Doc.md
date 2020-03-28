@@ -38,9 +38,7 @@
   <code>
 	std::string getValueOfAttribute(std::string attribute)
   </code>
-  <br/>
   und
-  <br/>
   <code>
 	bool setValueOfAttribute(std::string attribute, std::string value)
   </code>
