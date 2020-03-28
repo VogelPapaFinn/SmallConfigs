@@ -16,16 +16,11 @@ Eine kleine Lib die Config Dateien verarbeiten kann.
 
 # Format:
 Das Format sieht im Moment noch so aus:
-
-Variable = Wert
-
+<code>Variable = Wert</code>
 Hier kann das "=" durch jedes beliebige ZEICHEN ersetzt werden. Aber Achtung: Es darf nur EIN ZEICHEN verwendet werden! Wenn mehr als ein Zeichen verwendet wird, wird dieses zum Wert gezählt!
 
 # Kommentare:
 Kommentare können wie gewohnt mit "#" hinzugefügt werden. Aber Achtung, alles nach einem Kommentar wird ebenfalls als Kommentar gezählt! Als Beispiel:
-
 <code>MenschenAufDerWelt = 5 # Alle Menschen auf der Welt</code>
-
 Das funktioniert, das wiederum nicht:
-
-#Menschen auf der Welt MenschenAufDerWelt = 5
+<code>#Menschen auf der Welt MenschenAufDerWelt = 5</code>
