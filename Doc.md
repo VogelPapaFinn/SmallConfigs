@@ -72,7 +72,7 @@
 		bereits eine Datei geöffnet ist. Falls die öffnung der Datei erfolgreich war wird <i>true</i> zurückgegeben:
 		<br/><br/>
 		<code>std::string file_directory</code> ist der Pfad/Name der zu öffnenden Datei.<br/><br/>
-		<i>return value:</i> Bei erfolgreichem öffnen wird <i>zurückgegeben</i>.
+		<i>return value:</i> Bei erfolgreichem öffnen wird <i>true</i> zurückgegeben.
 	</li>
 	<li>
 		<strong><font style="font-size:20px">bool close()</font></strong><br/>
