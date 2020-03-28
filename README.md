@@ -5,7 +5,7 @@ Eine kleine Lib die Config Dateien verarbeiten kann.
 - Individueller Dateiname und Dateiendung
 - Auslesen von Werten
 - Ändern von Werten
-- Freiheit auf zuweisung "Operator" (egal ob : =)
+- Freiheit bei Zuweisung-"Operator" (egal ob : =)
 
 # Kommende Features:
 - Gruppen-System:
