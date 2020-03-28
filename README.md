@@ -1,5 +1,5 @@
 # AConfigFileLib
-Eine kleine Lib die Config Dateien verarbeiten kann.
+Eine kleine Library die Config-Dateien ver- und bearbeiten kann.
 
 # Features:
 - Individueller Dateiname und Dateiendung
