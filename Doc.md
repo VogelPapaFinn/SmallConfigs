@@ -34,27 +34,6 @@
   Wie du siehst, gibt es hier [bisher] nur die Möglichkeit zu lesen und zu schreiben. Wahrscheinlich werden in der Zukunft neue 
   Modi dazu kommen, also einfach mal die Augen offen halten!
   <br/><br/>
-  Die beiden Funktionen
-  <code>
-	std::string getValueOfAttribute(std::string attribute)
-  </code>
-  und
-  <code>
-	bool setValueOfAttribute(std::string attribute, std::string value)
-  </code>
+  <strong><font style="font-size:80px">Funktionen Beschreibung</font></strong>
   <br/>
-  sollten sich auch von selbst erklären! Und zu guter letzt:
-  <br/>
-  <code>
-	bool open(std::string file_directory)
-  </code>
-  <br/>
-  und
-  <br/>
-  <code>
-	void close()
-  </code>
-  <br/>
-  öffnen bzw. schließen die aktuelle Datei.
 </p>
-
