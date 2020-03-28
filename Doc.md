@@ -36,4 +36,45 @@
   <br/><br/>
   <strong><font style="font-size:80px">Funktionen Beschreibung</font></strong>
   <br/>
+  <ul>
+  	<li>
+		<strong><font style="font-size:20px">ConfigFile(std::string directory, FILE_MODE WRITE_OR_READ)</font></strong><br/>
+		Dem Constructor werden der Speicherort der zuöffnenden Datei sowie der Modus, wie dei Datei geöffnet werden 
+		soll, übergeben:<br/><br/>
+		<code>std::string directory</code> ist der Pfad der zu der Datei führt. <br/><br/>
+		<code>FILE_MODE WRITE_OR_READ</code> ist der Modus in dem die Datei geöffnet wird. Bisher stehen hier Lesen 
+		<i>FILE_READ</i> oder Schreiben <i>FILE_WRITE</i> zur Auswahl. Diese gehören zum <i>enum FILE_MODE</i> in der 
+		Header Datei.
+	</li>
+	<br/>
+	<li>
+		<strong><font style="font-size:20px">std::string getValueOfAttribute(std::string attribute)</font></strong><br/>
+		Der Funktion <i>getValueOfAttribute()</i> wird nur das Attribute/Variable übergeben, von der man den Wert haben 
+		will. Dieser wird dann, in Form eines Strings, zurückgegeben:
+		<br/>
+		<code>std::string attribute</code> ist der Name des zu suchenden Attributes/Variable.<br/><br/>
+	</li>
+	<li>
+		<strong><font style="font-size:20px">bool setValueOfAttribute(std::string attribute, std::string value)</font></strong><br/>
+		Der Funktion <i>setValueOfAttribute()</i> werden der Name des Attributes/Variable und der neue Wert, den diese 	
+		annehmen soll, übergeben:
+		<br/>
+		<code>std::string attribute</code> ist der Name des zu suchenden Attributes/Variable.<br/><br/>
+		<code>std::string value</code> ist der neue Wert, den das Attribut/Variable annimmt.<br/><br/>
+	</li>
+	<li>
+		<strong><font style="font-size:20px">bool open(std::string file_directory)</font></strong><br/>
+		Der Funktion <i>open()</i> werden der Name der zu öffnenden Datei übergeben. Hierbei wird zuerst überprüft, ob 
+		bereits eine Datei geöffnet ist. Falls die öffnung der Datei erfolgreich war wird <i>true</i> zurückgegeben:
+		<br/>
+		<code>std::string file_directory</code> ist der Pfad/Name der zu öffnenden Datei.<br/><br/>
+		<i>return value</i> bei erfolgreichem öffnen wird <i>zurückgegeben</i>.
+	</li>
+	<li>
+		<strong><font style="font-size:20px">bool close()</font></strong><br/>
+		Der Funktion <i>close()</i> werden keine Parameter übergeben, denn diese schließt nur die aktuell geöffnete 
+		Datei.
+		<br/>
+	</li>
+  </ul>
 </p>
