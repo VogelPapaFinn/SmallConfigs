@@ -53,7 +53,7 @@
 		will. Dieser wird dann, in Form eines Strings, zurückgegeben:
 		<br/><br/>
 		<code>std::string attribute</code> ist der Name des zu suchenden Attributes/Variable.<br/><br/>
-		<i>return value</i> Bei erfolgreichem auslesen des Wertes wird dieser (als ein <i>std::string</i>) 
+		<i>return value:</i> Bei erfolgreichem auslesen des Wertes wird dieser (als ein <i>std::string</i>) 
 		zurückgegeben, falls nicht wird <i>ERROR: ATTRIBUTE NOT FOUND</i> zurückgegeben.
 	</li>
 	<li>
@@ -63,7 +63,7 @@
 		<br/><br/>
 		<code>std::string attribute</code> ist der Name des zu suchenden Attributes/Variable.<br/><br/>
 		<code>std::string value</code> ist der neue Wert, den das Attribut/Variable annimmt.<br/><br/>
-		<i>return value</i> Bei erfolgreichem überschreiben des Wertes wird <i>true</i> zurückgegeben. 
+		<i>return value:</i> Bei erfolgreichem überschreiben des Wertes wird <i>true</i> zurückgegeben. 
 		<strong>ACHTUNG:</strong> falls immernoch eine Datei geöffnet wird, wird ebenfalls <i>false</i> zurückgegeben!
 	</li>
 	<li>
@@ -72,7 +72,7 @@
 		bereits eine Datei geöffnet ist. Falls die öffnung der Datei erfolgreich war wird <i>true</i> zurückgegeben:
 		<br/><br/>
 		<code>std::string file_directory</code> ist der Pfad/Name der zu öffnenden Datei.<br/><br/>
-		<i>return value</i> Bei erfolgreichem öffnen wird <i>zurückgegeben</i>.
+		<i>return value:</i> Bei erfolgreichem öffnen wird <i>zurückgegeben</i>.
 	</li>
 	<li>
 		<strong><font style="font-size:20px">bool close()</font></strong><br/>
