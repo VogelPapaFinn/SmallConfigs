@@ -24,7 +24,7 @@ Hier kann das "=" durch jedes beliebige ZEICHEN ersetzt werden. Aber Achtung: Es
 # Kommentare:
 Kommentare können wie gewohnt mit "#" hinzugefügt werden. Aber Achtung, alles nach einem Kommentar wird ebenfalls als Kommentar gezählt! Als Beispiel:
 
-MenschenAufDerWelt = 5 # Alle Menschen auf der Welt
+<code>MenschenAufDerWelt = 5 # Alle Menschen auf der Welt</code>
 
 Das funktioniert, das wiederum nicht:
 
