@@ -33,7 +33,7 @@
   <br/>
   Wie du siehst, gibt es hier [bisher] nur die Möglichkeit zu lesen und zu schreiben. Wahrscheinlich werden in der Zukunft neue 
   Modi dazu kommen, also einfach mal die Augen offen halten!
-  <br/>
+  <br/><br/>
   <code>
 	std::string getValueOfAttribute(std::string attribute)
   </code>
