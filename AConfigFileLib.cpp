@@ -89,7 +89,7 @@ bool ConfigFile::setValueOfAttribute(std::string attribute, std::string value)
 	return true;
 }
 
-bool ConfigFile::createAttributeWithValue(std::string attribute, char dot, std::string value)
+void ConfigFile::createAttributeWithValue(std::string attribute, char dot, std::string value)
 {
 	// Go to the Top of File
 	m_ConfigFileStream.clear();
