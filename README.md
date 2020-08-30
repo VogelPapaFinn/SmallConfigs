@@ -5,14 +5,12 @@ Eine kleine Library die Config-Dateien ver- und bearbeiten kann.
 - Individueller Dateiname und Dateiendung
 - Auslesen von Werten
 - Ändern von Werten
+- Erstellen von neuen Attributen mit Werten während das Programm läuft
 - Freiheit bei Zuweisung-"Operator" (egal ob : =)
 
 # Kommende Features:
 - Gruppen-System:
     Ich habe vor in den nächsten Wochen ein Gruppen-System hinzuzufügen, damit man mehrere Variablen zusammenfassen kann
-- Hinzufügen neuer Attribute:
-    Es wird noch die möglichkeit kommen, dass man Attribute im Programm hinzufügen kann. Im Moment muss man dies noch von Hand       
-    machen
 
 # Format:
 Das Format sieht im Moment noch so aus:
