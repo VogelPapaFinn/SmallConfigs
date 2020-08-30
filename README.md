@@ -5,7 +5,7 @@ Eine kleine Library die Config-Dateien ver- und bearbeiten kann.
 - Individueller Dateiname und Dateiendung
 - Auslesen von Werten
 - Ändern von Werten
-- Erstellen von neuen Attributen mit Werten während das Programm läuft
+- Erstellen von neuen Attributen mit Werten während der Runtime
 - Freiheit bei Zuweisung-"Operator" (egal ob : =)
 
 # Kommende Features:
