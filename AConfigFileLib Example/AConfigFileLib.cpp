@@ -1,6 +1,6 @@
 #include "AConfigFileLib.hpp"
 
-ConfigFile::ConfigFile(std::string directory, MODE WRITE_OR_READ)
+ConfigFile::ConfigFile(std::string directory, FILE_MODE WRITE_OR_READ)
 {
 	// Update MODE
 	m_WRITE_OR_READ = WRITE_OR_READ;
@@ -26,17 +26,23 @@ std::string ConfigFile::getValueOfAttribute(std::string attribute)
 		// Set Line
 		line = lineC;
 
-		// Remove spaces
-		this->remove(line, ' ');
-
-		// Remove all Comments in Line
-		this->removeCommentsInLine(line);
-
-		// Find Attribute
-		if (line.find(attribute) != std::string::npos)
+		// Blank Line?
+		if (line.size() != 0)
 		{
-			this->remove(line, attribute);
-			return line;
+			// Remove spaces
+			this->remove(line, ' ');
+
+			// Remove all Comments in Line
+			this->removeCommentsInLine(line);
+
+			// Find Attribute
+			if (line.find(attribute) != std::string::npos)
+			{
+				this->remove(line, attribute);
+				return line;
+			}
+			else
+				return "ERROR: ATTRIBUTE NOT FOUND";
 		}
 	}
 }
@@ -83,7 +89,33 @@ bool ConfigFile::setValueOfAttribute(std::string attribute, std::string value)
 	return true;
 }
 
-void ConfigFile::remove(std::string &string, char remove)
+void ConfigFile::createAttributeWithValue(std::string attribute, char dot, std::string value)
+{
+	// Go to the Top of File
+	m_ConfigFileStream.clear();
+	m_ConfigFileStream.seekg(std::ios::beg);
+
+	// Close Read Stream
+	m_ConfigFileStream.close();
+
+	// Open a write Stream
+	std::fstream writeStream(m_sFileDirectory, std::ios::app);
+
+	// Go to bottom of File
+	writeStream.seekg(std::ios::end);
+	writeStream.clear();
+
+	// Write line to File
+	writeStream << attribute << dot << value;
+
+	// Close Write Stream
+	writeStream.close();
+
+	// Reopen Read Stream
+	this->open(m_sFileDirectory);
+}
+
+void ConfigFile::remove(std::string& string, char remove)
 {
 	// remove every character in the string
 	for (int i = 0; i < string.size(); i++)
@@ -91,7 +123,7 @@ void ConfigFile::remove(std::string &string, char remove)
 			string.erase(i, 1);
 }
 
-void ConfigFile::remove(std::string &string, std::string remove)
+void ConfigFile::remove(std::string& string, std::string remove)
 {
 	// Vector of chars to remove
 	std::vector<int> toRemovePositions;
@@ -126,12 +158,26 @@ void ConfigFile::remove(std::string &string, std::string remove)
 	}
 }
 
-void ConfigFile::removeCommentsInLine(std::string &string)
+void ConfigFile::removeCommentsInLine(std::string& string)
 {
 	// Remove everything behind "#"
 	for (int i = 0; i < string.size(); i++)
 		if (string.at(i) == '#')
 			string.erase(i, string.size());
+}
+
+bool ConfigFile::open(std::string file_directory)
+{
+	// Load new file
+	if (!m_ConfigFileStream.is_open())
+		m_ConfigFileStream.open(file_directory);
+	else
+		return false;
+
+	if (m_ConfigFileStream.is_open())
+		return true;
+	else
+		return false;
 }
 
 void ConfigFile::close()
