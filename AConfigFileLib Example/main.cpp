@@ -8,19 +8,19 @@ int main()
 {
 
 	ConfigFile file("config.ini", FILE_READ);
-	std::string s = file.getValueOfAttribute("sina");	
+	std::string s = file.getValueOfAttribute("resolution");	
 	std::cout << s << std::endl;
 	file.close();
 
 	ConfigFile write("config.ini", FILE_WRITE);
-	write.setValueOfAttribute("sina", "divers");
+	write.setValueOfAttribute("resolution", "antialiasing");
+	write.createAttributeWithValue("neuesAtt", ':', "96");
 	write.close();
 	
 	ConfigFile file2("config.ini", FILE_READ);
-	s = file2.getValueOfAttribute("sina");
+	s = file2.getValueOfAttribute("resolution");
 	std::cout << s << std::endl;
 	file2.close();
-
 
 	return 0;
 }
