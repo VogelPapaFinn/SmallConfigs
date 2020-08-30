@@ -113,8 +113,6 @@ void ConfigFile::createAttributeWithValue(std::string attribute, char dot, std::
 
 	// Reopen Read Stream
 	this->open(m_sFileDirectory);
-
-	return true;
 }
 
 void ConfigFile::remove(std::string& string, char remove)
