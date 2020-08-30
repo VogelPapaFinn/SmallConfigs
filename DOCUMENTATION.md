@@ -14,6 +14,7 @@
     <li>ConfigFile(std::string directory, MODE WRITE_OR_READ)</li>
     <li>std::string getValueOfAttribute(std::string attribute)</li>
     <li>bool setValueOfAttribute(std::string attribute, std::string value)</li>
+    <li>void createAttributeWithValue(std::string attribute, char dot, std::string value);</li>
     <li>void open(std::string file_directory</li>
     <li>void close()</li>
   </ul>
@@ -65,6 +66,15 @@
 		<code>std::string value</code> ist der neue Wert, den das Attribut/Variable annimmt.<br/><br/>
 		<i>return value:</i> Bei erfolgreichem überschreiben des Wertes wird <i>true</i> zurückgegeben. 
 		<strong>ACHTUNG:</strong> falls immernoch eine Datei geöffnet wird, wird ebenfalls <i>false</i> zurückgegeben!
+	</li>
+	<li>
+		<strong><font style="font-size:20px">void ConfigFile::createAttributeWithValue(std::string attribute, char dot, std::string value)</font></strong><br/>
+		Der Funktion <i>createAttributeWithValue()</i> werden der Name des neuen Attributes, der Zuweisungs-Operator [':';'=';..] und der Wert übergeben:.
+		<br/><br/>
+		<code>std::string attribute</code> ist der Name des zu erstellenden Attributes.<br/><br/>
+		<code>char dot</code> ist der zu nutzende Zuweisungs-Operator.<br/><br/>
+		<code>std::string value</code> ist der Wert, den das Attribut annimmt.<br/><br/>
+		<br/>
 	</li>
 	<li>
 		<strong><font style="font-size:20px">bool open(std::string file_directory)</font></strong><br/>
