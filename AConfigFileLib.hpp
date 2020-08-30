@@ -17,7 +17,7 @@ class ConfigFile
 		ConfigFile(std::string directory, FILE_MODE WRITE_OR_READ);
 		std::string getValueOfAttribute(std::string attribute);
 		bool setValueOfAttribute(std::string attribute, std::string value);
-		bool createAttributeWithValue(std::string attribute, char dot, std::string value);
+		void createAttributeWithValue(std::string attribute, char dot, std::string value);
 		bool open(std::string file_directory);
 		void close();
 
