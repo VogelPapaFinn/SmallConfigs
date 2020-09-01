@@ -25,3 +25,6 @@ Kommentare können wie gewohnt mit "#" hinzugefügt werden. Aber Achtung, alles 
 Das funktioniert, das wiederum nicht:
 
 <code>#Menschen auf der Welt MenschenAufDerWelt = 5</code>
+
+# Dokumentation:
+In der DOCUMENTATION.md ist eine genauere Beschreibung zu den einzelnen Funktionen, deren Parameter und Rückgabewerte. Dies ist außerdem ein guter Punkt zum starten!
