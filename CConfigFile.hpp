@@ -18,7 +18,6 @@ class CConfigFile
 		CConfigFile(std::string pFile);
 
 		bool open(std::string pFile);
-		void readLines();
 		void save();
 		void close();
 
@@ -39,6 +38,8 @@ class CConfigFile
 		std::string get(std::string pName);
 
 	private:
+		void readLines();									// Alle Zeilen einlesen
+
 		std::string translateCode(std::string pLine);		// Übersetzt Zeile zum einfacheren bearbeiten
 		std::string translateFile(std::string pLine);		// Übersetzt Zeile zum einfügen in Config
 

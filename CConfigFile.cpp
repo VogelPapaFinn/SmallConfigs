@@ -1,5 +1,15 @@
 #include "CConfigFile.hpp"
+/* 
+* author:  VogelPapaFinn
+* version: 2.0-unstable
+*/
 
+// Wenn einem Attribut keine Gruppe zugewiesen wird, wird es automatisch der Gruppe "default" zugewiesen.
+// Genau genommen gibt es keine gruppenlose Attribute. Sie können vom Anwender aber so behandelt werden.
+
+
+// Constructor
+//  Öffnet die Datei 'pFile' oder legt eine an, falls noch keine exestiert.
 CConfigFile::CConfigFile(std::string pFile)
 {
 	m_File = pFile;
@@ -29,7 +39,9 @@ CConfigFile::CConfigFile(std::string pFile)
 }
 
 
-
+// open
+// Öffnet die Datei 'pFile', falls diese noch nicht exestiert wird KEINE angelegt.
+// Gibt 'true' zurück, wenn erfolgreich
 bool CConfigFile::open(std::string pFile)
 {
 	// Config Datei öffnen
@@ -49,26 +61,8 @@ bool CConfigFile::open(std::string pFile)
 	return false;
 }
 
-void CConfigFile::readLines()
-{
-	// Config offen?
-	if (m_CurrentState == STATE::OPENED)
-	{
-		// Zum Anfang der Datei springen
-		m_fstream.clear();
-		m_fstream.seekg(std::fstream::beg);
-
-		// Liste leeren
-		m_Lines.clear();
-
-		// Jede Zeile einlesen
-		std::string stringGL;			// Braucht getline();
-		while (std::getline(m_fstream, stringGL))
-			// Zu Liste hinzufügen
-			m_Lines.push_back(this->translateCode(stringGL));
-	}
-}
-
+// save
+// Speichert alle Änderungen in der Datei
 void CConfigFile::save()
 {
 	// Datei zum schreiben neu öffnen
@@ -87,6 +81,8 @@ void CConfigFile::save()
 	if(this->open(m_File)) m_CurrentState = STATE::OPENED; // Wieder geöffnet
 }
 
+// close
+// Löscht alle unnötigen leeren Zeilen, Speichert die Datei und schließt sie
 void CConfigFile::close()
 {
 	// smooth
@@ -103,7 +99,10 @@ void CConfigFile::close()
 }
 
 
-
+// write
+// Schreibt das Attribut 'pName' mit dem Wert 'pValue' in die Gruppe 'pGroup'.
+// Falls es noch keine exestiert wird eine erstellt.
+// Gibt 'true' zurück, wenn erfolgreich
 bool CConfigFile::write(std::string pName, std::string pValue, std::string pGroup)
 {
 	// Config offen?
@@ -144,18 +143,23 @@ bool CConfigFile::write(std::string pName, std::string pValue, std::string pGrou
 	return false;
 }
 
+// write
+// Schreibt das Attribut 'pName' mit dem Wert 'pValue' in die Gruppe "default"
+// Gibt 'true' zurück, wenn erfolgreich
 bool CConfigFile::write(std::string pName, std::string pValue)
 {
 	// Config offen?
 	if (m_CurrentState == STATE::CLOSED)
 		return false; // Nein
 
-	// Gebe Rückgabewert von write() zurück
+	// Gebe Rückgabewert von write zurück
 	return this->write(pName, pValue, "default");;
 }
 
 
-
+// get
+// Liest Wert von Attribut 'pName' in der Gruppe 'pGroup' aus
+// Gibt Wert als 'std::string' zurück
 std::string CConfigFile::get(std::string pName, std::string pGroup)
 {
 	// Gibt es Attribut & Gruppe überhaupt?
@@ -166,13 +170,17 @@ std::string CConfigFile::get(std::string pName, std::string pGroup)
 	return m_Lines.at(i).substr(pName.size() + 3, m_Lines.at(i).size() - (pName.size() + 3));
 }
 
+// get
+// Liest Wert von Attribut 'pName' in der Gruppe "default" aus
+// Gibt Wert als 'std::string' zurück
 std::string CConfigFile::get(std::string pName)
 {
 	return this->get(pName, "default");
 }
 
 
-
+// remove
+// Löscht Attribut 'pName' aus Gruppe 'pGroup'
 void CConfigFile::remove(std::string pName, std::string pGroup)
 {
 	// Exestiert Attribut und Gruppe überhaupt?
@@ -182,18 +190,24 @@ void CConfigFile::remove(std::string pName, std::string pGroup)
 		m_Lines.erase(m_Lines.begin() + i, m_Lines.begin() + i + 1);
 }
 
+// remove
+// Löscht Attribut 'pName' aus Gruppe 'pGroup'
 void CConfigFile::remove(std::string pName, const char* pGroup)
 {
 	// remove
 	this->remove(pName, std::string(pGroup));
 }
 
+// remove
+// Löscht Attribut 'pName' aus Gruppe "default"
 void CConfigFile::remove(std::string pName)
 {
 	// remove
 	this->remove(pName, "default");
 }
 
+// remove
+// Löscht Gruppe 'pGroup'. Wenn 'pMove' true ist, werden alle Attribute der Gruppe in "default" verschoben
 void CConfigFile::remove(std::string pGroup, bool pMove)
 {
 	// Exestiert die Gruppe überhaupt?
@@ -236,6 +250,8 @@ void CConfigFile::remove(std::string pGroup, bool pMove)
 	}
 }
 
+// remove
+// Löscht Attribut 'pName' aus Gruppe 'pGroup' und fügt es in die Gruppe "default" ein
 void CConfigFile::removeFromGroup(std::string pName, std::string pOldGroup)
 {
 	// move
@@ -243,7 +259,8 @@ void CConfigFile::removeFromGroup(std::string pName, std::string pOldGroup)
 }
 
 
-
+// move
+// Verschiebt Attribut 'pName' aus der Gruppe 'pOldGroup' in die Gruppe 'pNewGroup'
 void CConfigFile::move(std::string pName, std::string pOldGroup, std::string pNewGroup)
 {
 	if (this->exists(pName, pOldGroup) != -1)
@@ -259,10 +276,34 @@ void CConfigFile::move(std::string pName, std::string pOldGroup, std::string pNe
 	}
 }
 
+// move
+// Verschiebt Attribut 'pName' aus der Gruppe "default" in die Gruppe 'pNewGroup'
 void CConfigFile::move(std::string pName, std::string pNewGroup)
 {
 	// move
 	this->move(pName, "default", pNewGroup);
+}
+
+
+
+void CConfigFile::readLines()
+{
+	// Config offen?
+	if (m_CurrentState == STATE::OPENED)
+	{
+		// Zum Anfang der Datei springen
+		m_fstream.clear();
+		m_fstream.seekg(std::fstream::beg);
+
+		// Liste leeren
+		m_Lines.clear();
+
+		// Jede Zeile einlesen
+		std::string stringGL;			// Braucht getline();
+		while (std::getline(m_fstream, stringGL))
+			// Zu Liste hinzufügen
+			m_Lines.push_back(this->translateCode(stringGL));
+	}
 }
 
 
