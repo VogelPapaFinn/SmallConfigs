@@ -1,30 +1,25 @@
-# AConfigFileLib
+# SmallConfigs
 Eine kleine Library die Config-Dateien ver- und bearbeiten kann.
 
 # Features:
 - Individueller Dateiname und Dateiendung
-- Auslesen von Werten
-- Ändern von Werten
-- Erstellen von neuen Attributen mit Werten während der Runtime
-- Freiheit bei Zuweisung-"Operator" (egal ob : =)
+- Erstellen von Einträgen
+- Löschen von Einträgen
+- Gruppen
+- Verschieben von Einträgen zwischen zwei Gruppen
 
 # Kommende Features:
-- Gruppen-System:
-    Ich habe vor in den nächsten Wochen ein Gruppen-System hinzuzufügen, damit man mehrere Variablen zusammenfassen kann
+- X
 
 # Format:
-Das Format sieht im Moment noch so aus:
-<code>Variable = Wert</code>
-Hier kann das "=" durch jedes beliebige ZEICHEN ersetzt werden. Aber Achtung: Es darf nur EIN ZEICHEN verwendet werden! Wenn mehr als ein Zeichen verwendet wird, wird dieses zum Wert gezählt!
+Ein Eintrag sieht in der Config immer so aus: <code>foo: bar</code>.
+Eine Gruppe immer so: 
+<code>[Group]
+...
+[/Group]</code>.
 
 # Kommentare:
-Kommentare können wie gewohnt mit "#" hinzugefügt werden. Aber Achtung, alles nach einem Kommentar wird ebenfalls als Kommentar gezählt! Als Beispiel:
-
-<code>MenschenAufDerWelt = 5 # Alle Menschen auf der Welt</code>
-
-Das funktioniert, das wiederum nicht:
-
-<code>#Menschen auf der Welt MenschenAufDerWelt = 5</code>
+Diese Library unterstützt KEINE Kommentare in der Config Datei. Diese werden automatisch Entfernt!
 
 # Dokumentation:
-In der DOCUMENTATION.md ist eine genauere Beschreibung zu den einzelnen Funktionen, deren Parameter und Rückgabewerte. Diese ist außerdem ein guter Punkt zum starten!
+In der DOCUMENTATION.md ist eine genauere Beschreibung zu den einzelnen Funktionen, deren Parameter und Rückgabewerte. Falls man mit den Beschreibungen im Code nicht zurecht kommt, kann man sich hier genau informieren!
