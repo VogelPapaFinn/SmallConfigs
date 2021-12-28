@@ -5,16 +5,16 @@
 */
 
 // Wenn einem Attribut keine Gruppe zugewiesen wird, wird es automatisch der Gruppe "default" zugewiesen.
-// Genau genommen gibt es keine gruppenlose Attribute. Sie können vom Anwender aber so behandelt werden.
+// Genau genommen gibt es keine gruppenlose Attribute. Sie kÃ¶nnen vom Anwender aber so behandelt werden.
 
 
 // Constructor
-//  Öffnet die Datei 'pFile' oder legt eine an, falls noch keine exestiert.
+//  Ã–ffnet die Datei 'pFile' oder legt eine an, falls noch keine exestiert.
 CConfigFile::CConfigFile(std::string pFile)
 {
 	m_File = pFile;
 
-	// Config Datei öffnen
+	// Config Datei Ã¶ffnen
 	m_fstream.open(pFile, std::fstream::in);
 
 	// Erfolgreich?
@@ -39,12 +39,13 @@ CConfigFile::CConfigFile(std::string pFile)
 }
 
 
+
 // open
-// Öffnet die Datei 'pFile', falls diese noch nicht exestiert wird KEINE angelegt.
-// Gibt 'true' zurück, wenn erfolgreich
+// Ã–ffnet die Datei 'pFile', falls diese noch nicht exestiert wird KEINE angelegt.
+// Gibt 'true' zurÃ¼ck, wenn erfolgreich
 bool CConfigFile::open(std::string pFile)
 {
-	// Config Datei öffnen
+	// Config Datei Ã¶ffnen
 	m_fstream.open(pFile, std::fstream::in);
 
 	// Erfolgreich?
@@ -62,10 +63,10 @@ bool CConfigFile::open(std::string pFile)
 }
 
 // save
-// Speichert alle Änderungen in der Datei
+// Speichert alle Ã„nderungen in der Datei
 void CConfigFile::save()
 {
-	// Datei zum schreiben neu öffnen
+	// Datei zum schreiben neu Ã¶ffnen
 	m_fstream.close();
 	m_fstream.open(m_File, std::ios::out | std::ios::trunc);
 
@@ -73,16 +74,16 @@ void CConfigFile::save()
 	for (std::string& s : m_Lines)
 		m_fstream << this->translateFile(s) << std::endl;
 
-	// Schließen
+	// SchlieÃŸen
 	m_fstream.close();
-	m_CurrentState = STATE::CLOSED; // STATE ändern
+	m_CurrentState = STATE::CLOSED; // STATE Ã¤ndern
 
-	// Neu öffnen
-	if(this->open(m_File)) m_CurrentState = STATE::OPENED; // Wieder geöffnet
+	// Neu Ã¶ffnen
+	if(this->open(m_File)) m_CurrentState = STATE::OPENED; // Wieder geÃ¶ffnet
 }
 
 // close
-// Löscht alle unnötigen leeren Zeilen, Speichert die Datei und schließt sie
+// LÃ¶scht alle unnÃ¶tigen leeren Zeilen, Speichert die Datei und schlieÃŸt sie
 void CConfigFile::close()
 {
 	// smooth
@@ -91,18 +92,19 @@ void CConfigFile::close()
 	// save
 	this->save();
 
-	// m_fstream schließen
+	// m_fstream schlieÃŸen
 	m_fstream.close();
 
-	// STATE ändern
+	// STATE Ã¤ndern
 	m_CurrentState = STATE::CLOSED;
 }
+
 
 
 // write
 // Schreibt das Attribut 'pName' mit dem Wert 'pValue' in die Gruppe 'pGroup'.
 // Falls es noch keine exestiert wird eine erstellt.
-// Gibt 'true' zurück, wenn erfolgreich
+// Gibt 'true' zurÃ¼ck, wenn erfolgreich
 bool CConfigFile::write(std::string pName, std::string pValue, std::string pGroup)
 {
 	// Config offen?
@@ -117,19 +119,19 @@ bool CConfigFile::write(std::string pName, std::string pValue, std::string pGrou
 		m_Lines.at(i).replace(pName.size() + 3, m_Lines.at(i).size()-(pName.size() + 3), pValue);
 	else // Nein
 	{
-		// Gibt es die Gruppe überhaupt?
+		// Gibt es die Gruppe Ã¼berhaupt?
 		i = this->exists(pGroup);
 		std::string tmp = pName + ":/l" + pValue; // Neue Zeile, zwischengespeichert
 		if (i != -1)
 		{
-			// Neue Zeile einfügen
+			// Neue Zeile einfÃ¼gen
 			m_Lines.insert(m_Lines.begin() + i + 1, tmp);
 
 			return true;
 		}
 		else
 		{
-			// Neue Gruppe einfügen
+			// Neue Gruppe einfÃ¼gen
 			m_Lines.insert(m_Lines.end(), "[" + pGroup + "]");
 			m_Lines.insert(m_Lines.end(), tmp);
 			m_Lines.insert(m_Lines.end(), "[/" + pGroup + "]");
@@ -145,53 +147,55 @@ bool CConfigFile::write(std::string pName, std::string pValue, std::string pGrou
 
 // write
 // Schreibt das Attribut 'pName' mit dem Wert 'pValue' in die Gruppe "default"
-// Gibt 'true' zurück, wenn erfolgreich
+// Gibt 'true' zurÃ¼ck, wenn erfolgreich
 bool CConfigFile::write(std::string pName, std::string pValue)
 {
 	// Config offen?
 	if (m_CurrentState == STATE::CLOSED)
 		return false; // Nein
 
-	// Gebe Rückgabewert von write zurück
+	// Gebe RÃ¼ckgabewert von write zurÃ¼ck
 	return this->write(pName, pValue, "default");;
 }
 
 
+
 // get
 // Liest Wert von Attribut 'pName' in der Gruppe 'pGroup' aus
-// Gibt Wert als 'std::string' zurück
+// Gibt Wert als 'std::string' zurÃ¼ck
 std::string CConfigFile::get(std::string pName, std::string pGroup)
 {
-	// Gibt es Attribut & Gruppe überhaupt?
+	// Gibt es Attribut & Gruppe Ã¼berhaupt?
 	int i = this->exists(pName, pGroup); // Zeile zwischenspeichern
 	if (i == -1) return ""; // Nein
 	
-	// Ja, Value zurückgeben
+	// Ja, Value zurÃ¼ckgeben
 	return m_Lines.at(i).substr(pName.size() + 3, m_Lines.at(i).size() - (pName.size() + 3));
 }
 
 // get
 // Liest Wert von Attribut 'pName' in der Gruppe "default" aus
-// Gibt Wert als 'std::string' zurück
+// Gibt Wert als 'std::string' zurÃ¼ck
 std::string CConfigFile::get(std::string pName)
 {
 	return this->get(pName, "default");
 }
 
 
+
 // remove
-// Löscht Attribut 'pName' aus Gruppe 'pGroup'
+// LÃ¶scht Attribut 'pName' aus Gruppe 'pGroup'
 void CConfigFile::remove(std::string pName, std::string pGroup)
 {
-	// Exestiert Attribut und Gruppe überhaupt?
+	// Exestiert Attribut und Gruppe Ã¼berhaupt?
 	int i = this->exists(pName, pGroup);
 	if (i != -1)
-		// Line rauslöschen
+		// Line rauslÃ¶schen
 		m_Lines.erase(m_Lines.begin() + i, m_Lines.begin() + i + 1);
 }
 
 // remove
-// Löscht Attribut 'pName' aus Gruppe 'pGroup'
+// LÃ¶scht Attribut 'pName' aus Gruppe 'pGroup'
 void CConfigFile::remove(std::string pName, const char* pGroup)
 {
 	// remove
@@ -199,7 +203,7 @@ void CConfigFile::remove(std::string pName, const char* pGroup)
 }
 
 // remove
-// Löscht Attribut 'pName' aus Gruppe "default"
+// LÃ¶scht Attribut 'pName' aus Gruppe "default"
 void CConfigFile::remove(std::string pName)
 {
 	// remove
@@ -207,10 +211,10 @@ void CConfigFile::remove(std::string pName)
 }
 
 // remove
-// Löscht Gruppe 'pGroup'. Wenn 'pMove' true ist, werden alle Attribute der Gruppe in "default" verschoben
+// LÃ¶scht Gruppe 'pGroup'. Wenn 'pMove' true ist, werden alle Attribute der Gruppe in "default" verschoben
 void CConfigFile::remove(std::string pGroup, bool pMove)
 {
-	// Exestiert die Gruppe überhaupt?
+	// Exestiert die Gruppe Ã¼berhaupt?
 	int i = this->exists(pGroup);
 	int j = i;
 
@@ -226,18 +230,18 @@ void CConfigFile::remove(std::string pGroup, bool pMove)
 			i++; // Will mit Attributen starten, nicht mit Gruppen Header
 			while (m_Lines.at(i) != ("[/" + pGroup + "]"))
 			{
-				// Zeile einfügen
+				// Zeile einfÃ¼gen
 				m_Lines.insert(m_Lines.begin() + d + 1, m_Lines.at(i));
 
 				i = this->exists(pGroup) + 1; // Zeilen verschieben sich
 
-				// Zeile löschen
+				// Zeile lÃ¶schen
 				m_Lines.erase(m_Lines.begin() + i, m_Lines.begin() + i + 1);
 
 				i = this->exists(pGroup) + 1; // Zeilen verschieben sich
 			}
 
-			// Gruppe löschen
+			// Gruppe lÃ¶schen
 			this->remove(pGroup, false);
 		}
 		else
@@ -245,18 +249,19 @@ void CConfigFile::remove(std::string pGroup, bool pMove)
 			// Nein
 			while (m_Lines.at(j) != ("[/" + pGroup + "]"))
 				j++;
-			m_Lines.erase(m_Lines.begin() + i, m_Lines.begin() + j + 1); // Zeilen löschen
+			m_Lines.erase(m_Lines.begin() + i, m_Lines.begin() + j + 1); // Zeilen lÃ¶schen
 		}
 	}
 }
 
 // remove
-// Löscht Attribut 'pName' aus Gruppe 'pGroup' und fügt es in die Gruppe "default" ein
+// LÃ¶scht Attribut 'pName' aus Gruppe 'pGroup' und fÃ¼gt es in die Gruppe "default" ein
 void CConfigFile::removeFromGroup(std::string pName, std::string pOldGroup)
 {
 	// move
 	this->move(pName, pOldGroup, "default");
 }
+
 
 
 // move
@@ -268,10 +273,10 @@ void CConfigFile::move(std::string pName, std::string pOldGroup, std::string pNe
 		// Wert speichern
 		std::string value = this->get(pName, pOldGroup);
 
-		// Zeile löschen
+		// Zeile lÃ¶schen
 		this->remove(pName, pOldGroup);
 
-		// Zeile einfügen
+		// Zeile einfÃ¼gen
 		this->write(pName, value, pNewGroup);
 	}
 }
@@ -282,6 +287,45 @@ void CConfigFile::move(std::string pName, std::string pNewGroup)
 {
 	// move
 	this->move(pName, "default", pNewGroup);
+}
+
+
+// exists
+// ÃœberprÃ¼ft ob die Gruppe 'pGroup' bereits exestiert
+// Wenn ja wird die Zeile zurÃ¼ckgegeben, ansonsten -1
+int CConfigFile::exists(std::string pGroup)
+{
+	int i = 0;	// Aktuelle Zeile
+	for (std::string& s : m_Lines)
+	{
+		// Exestiert die Gruppe?
+		if (s == ("[" + pGroup + "]"))
+			return i;
+		i++; // NÃ¤chste Zeile
+	}
+	return -1;
+}
+
+// exists
+// ÃœberprÃ¼ft ob das Attribut 'pName' in der Gruppe 'pGroup' bereits exestiert
+// Wenn ja wird die Zeile zurÃ¼ckgegeben, ansonsten -1
+int CConfigFile::exists(std::string pName, std::string pGroup)
+{
+	int i = this->exists(pGroup);	// Aktuelle Zeile
+
+	// Exestiert die Gruppe?
+	if (i != -1)
+	{
+		// Ja, exestiert Attribut?
+		for (NULL; m_Lines.at(i) != ("[/" + pGroup + "]"); i++)
+		{
+			if (m_Lines.at(i).find(pName) != std::string::npos && m_Lines.at(i).find(":") != std::string::npos)
+				return i; // Ja, Zeile zurÃ¼ckgeben
+		}
+	}
+
+	// Exestiert nicht, Fehler zurÃ¼ckgeben
+	return -1;
 }
 
 
@@ -301,7 +345,7 @@ void CConfigFile::readLines()
 		// Jede Zeile einlesen
 		std::string stringGL;			// Braucht getline();
 		while (std::getline(m_fstream, stringGL))
-			// Zu Liste hinzufügen
+			// Zu Liste hinzufÃ¼gen
 			m_Lines.push_back(this->translateCode(stringGL));
 	}
 }
@@ -314,7 +358,7 @@ std::string CConfigFile::translateCode(std::string pLine)
 
 	/* 
 	* Leerzeichen  : /l
-	* '#'          : rauslöschen
+	* '#'          : rauslÃ¶schen
 	* ':'		   : bleibt
 	*/
 	for (char& c : pLine)
@@ -337,7 +381,7 @@ std::string CConfigFile::translateCode(std::string pLine)
 		}
 	}
 
-	// Zurückgeben
+	// ZurÃ¼ckgeben
 	return end;
 }
 
@@ -352,42 +396,8 @@ std::string CConfigFile::translateFile(std::string pLine)
 	if (i != std::string::npos)
 		tmp.replace(i, 2, " "); // '/l' durch " " ersetzen
 
-	// String zurückgeben
+	// String zurÃ¼ckgeben
 	return tmp;
-}
-
-
-
-int CConfigFile::exists(std::string pGroup)
-{
-	int i = 0;	// Aktuelle Zeile
-	for (std::string& s : m_Lines)
-	{
-		// Exestiert die Gruppe?
-		if (s == ("[" + pGroup + "]"))
-			return i;
-		i++; // Nächste Zeile
-	}
-	return -1;
-}
-
-int CConfigFile::exists(std::string pName, std::string pGroup)
-{
-	int i = this->exists(pGroup);	// Aktuelle Zeile
-
-	// Exestiert die Gruppe?
-	if (i != -1)
-	{
-		// Ja, exestiert Attribut?
-		for (NULL; m_Lines.at(i) != ("[/" + pGroup + "]"); i++)
-		{
-			if (m_Lines.at(i).find(pName) != std::string::npos && m_Lines.at(i).find(":") != std::string::npos)
-				return i; // Ja, Zeile zurückgeben
-		}
-	}
-
-	// Exestiert nicht, Fehler zurückgeben
-	return -1;
 }
 
 
@@ -397,7 +407,7 @@ void CConfigFile::smooth()
 	// Save
 	this->save();
 
-	// Alle leeren zeilen löschen
+	// Alle leeren zeilen lÃ¶schen
 	for (int i = 0; i < m_Lines.size(); i++)
 		if (m_Lines.at(i) == "")
 		{
@@ -405,7 +415,7 @@ void CConfigFile::smooth()
 			i--;
 		}
 
-	// Nach Abschluss jeder Gruppe Zeile einfügen
+	// Nach Abschluss jeder Gruppe Zeile einfÃ¼gen
 	for (int i = 0; i < m_Lines.size(); i++)
 		if (m_Lines.at(i).find("[/") != std::string::npos)
 		{
