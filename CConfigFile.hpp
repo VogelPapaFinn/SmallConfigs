@@ -24,6 +24,9 @@ class CConfigFile
 		bool write(std::string pName, std::string pValue);
 		bool write(std::string pName, std::string pValue, std::string pGroup);
 
+		std::string get(std::string pName, std::string pGroup);
+		std::string get(std::string pName);
+
 		void remove(std::string pName, std::string pGroup);
 		void remove(std::string pName, const char* pGroup);
 		void remove(std::string pName);
@@ -33,20 +36,16 @@ class CConfigFile
 		void move(std::string pName, std::string pOldGroup, std::string pNewGroup);
 		void move(std::string pName, std::string pNewGroup);
 
-
-		std::string get(std::string pName, std::string pGroup);
-		std::string get(std::string pName);
+		int exists(std::string pGroup);
+		int exists(std::string pName, std::string pGroup);
 
 	private:
 		void readLines();									// Alle Zeilen einlesen
 
-		std::string translateCode(std::string pLine);		// Übersetzt Zeile zum einfacheren bearbeiten
-		std::string translateFile(std::string pLine);		// Übersetzt Zeile zum einfügen in Config
+		std::string translateCode(std::string pLine);		// Ãœbersetzt Zeile zum einfacheren bearbeiten
+		std::string translateFile(std::string pLine);		// Ãœbersetzt Zeile zum einfÃ¼gen in Config
 
-		int exists(std::string pGroup);						// Exestiert die Gruppe?
-		int exists(std::string pName, std::string pGroup);	// Exestiert das Attribut X in Gruppe Y?
-
-		void smooth();										// Entfernt unnötige leere Zeilen
+		void smooth();										// Entfernt unnÃ¶tige leere Zeilen
 
 
 
