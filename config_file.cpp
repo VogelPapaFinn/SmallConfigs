@@ -1,5 +1,4 @@
 ﻿#include "config_file.h"
-#include <fstream>
 
 config_file::config_file(const std::string& file)
 {
@@ -151,7 +150,7 @@ void config_file::close()
 
 
 
-bool config_file::write(const std::string& name, const std::string& value, const std::string& group)
+bool config_file::write(std::string_view name, std::string_view value, std::string_view group)
 {
 	// Is the config file opened?
 	if (current_state_ == state::closed)
@@ -167,7 +166,7 @@ bool config_file::write(const std::string& name, const std::string& value, const
 	{
 		// Does the group exist?
 		i = this->exists(group);
-		const std::string tmp = name + ":/l" + value;
+		const std::string tmp = static_cast<std::string>(name) + ":/l" + static_cast<std::string>(value);
 		if (i != -1)
 		{
 			// Insert new line
@@ -178,9 +177,9 @@ bool config_file::write(const std::string& name, const std::string& value, const
 		else
 		{
 			// Create new group
-			line_vector_.insert(line_vector_.end(), "[" + group + "]");
+			line_vector_.insert(line_vector_.end(), "[" + static_cast<std::string>(group) + "]");
 			line_vector_.insert(line_vector_.end(), tmp);
-			line_vector_.insert(line_vector_.end(), "[/" + group + "]");
+			line_vector_.insert(line_vector_.end(), "[/" + static_cast<std::string>(group) + "]");
 			line_vector_.insert(line_vector_.end(), "");
 
 			return true;
@@ -191,7 +190,7 @@ bool config_file::write(const std::string& name, const std::string& value, const
 	return false;
 }
 
-bool config_file::write(const std::string& name, const std::string& value)
+bool config_file::write(std::string_view name, std::string_view value)
 {
 	// Is the config file opened?
 	if (current_state_ == state::closed)
@@ -203,7 +202,7 @@ bool config_file::write(const std::string& name, const std::string& value)
 
 
 
-std::string config_file::get(const std::string& name, const std::string& group)
+std::string config_file::get(std::string_view name, std::string_view group)
 {
 	// Does attribute and group exist?
 	const int i = this->exists(name, group);
@@ -213,14 +212,14 @@ std::string config_file::get(const std::string& name, const std::string& group)
 	return line_vector_.at(i).substr(name.size() + 3, line_vector_.at(i).size() - (name.size() + 3));
 }
 
-std::string config_file::get(const std::string& name)
+std::string config_file::get(std::string_view name)
 {
 	return this->get(name, "default");
 }
 
 
 
-void config_file::remove(const std::string& name, const std::string& group)
+void config_file::remove(std::string_view name, std::string_view group)
 {
 	// Does attribute and group exist?
 	const int i = this->exists(name, group);
@@ -229,19 +228,19 @@ void config_file::remove(const std::string& name, const std::string& group)
 		line_vector_.erase(line_vector_.begin() + i, line_vector_.begin() + i + 1);
 }
 
-void config_file::remove(const std::string& name, const char* group)
+void config_file::remove(std::string_view name, const char* group)
 {
 	// remove
 	this->remove(name, std::string(group));
 }
 
-void config_file::remove(const std::string& name)
+void config_file::remove(std::string_view name)
 {
 	// remove
 	this->remove(name, "default");
 }
 
-void config_file::remove(const std::string& group, const bool move)
+void config_file::remove(std::string_view group, const bool move)
 {
 	// Does group exist?
 	int i = this->exists(group);
@@ -257,7 +256,7 @@ void config_file::remove(const std::string& group, const bool move)
 
 			// Move all lines
 			i++; // Otherwise it moves the header of the group [XXX]
-			while (line_vector_.at(i) != ("[/" + group + "]"))
+			while (line_vector_.at(i) != ("[/" + static_cast<std::string>(group) + "]"))
 			{
 				// Insert line
 				line_vector_.insert(line_vector_.begin() + d + 1, line_vector_.at(i));
@@ -276,22 +275,22 @@ void config_file::remove(const std::string& group, const bool move)
 		else
 		{
 			// No
-			while (line_vector_.at(j) != ("[/" + group + "]"))
+			while (line_vector_.at(j) != ("[/" + static_cast<std::string>(group) + "]"))
 				j++;
 			line_vector_.erase(line_vector_.begin() + i, line_vector_.begin() + j + 1); // Delete line
 		}
 	}
 }
 
-void config_file::remove_from_group(const std::string& name, const std::string& old_group)
+void config_file::remove_from_group(std::string_view name, std::string_view old_group)
 {
 	// move
-	this->move(name, old_group, "default");
+	this->move(static_cast<std::string>(name), static_cast<std::string>(old_group), "default");
 }
 
 
 
-void config_file::move(const std::string& name, const std::string& old_group, const std::string& new_group)
+void config_file::move(std::string_view name, std::string_view old_group, std::string_view new_group)
 {
 	if (this->exists(name, old_group) != -1)
 	{
@@ -306,7 +305,7 @@ void config_file::move(const std::string& name, const std::string& old_group, co
 	}
 }
 
-void config_file::move(const std::string& name, const std::string& new_group)
+void config_file::move(std::string_view name, std::string_view new_group)
 {
 	// move
 	this->move(name, "default", new_group);
@@ -314,20 +313,20 @@ void config_file::move(const std::string& name, const std::string& new_group)
 
 
 
-int config_file::exists(const std::string& group)
+int config_file::exists(std::string_view group)
 {
 	int i = 0;	// Current line
 	for (std::string& s : line_vector_)
 	{
 		// Does the group exist?
-		if (s == ("[" + group + "]"))
+		if (s == ("[" + static_cast<std::string>(group) + "]"))
 			return i;
 		i++; // Next line
 	}
 	return -1;
 }
 
-int config_file::exists(const std::string& name, const std::string& group)
+int config_file::exists(std::string_view name, std::string_view group)
 {
 	int i = this->exists(group);	// Current line
 
@@ -335,7 +334,7 @@ int config_file::exists(const std::string& name, const std::string& group)
 	if (i != -1)
 	{
 		// Yes, does the attribute exist?
-		for (NULL; line_vector_.at(i) != ("[/" + group + "]"); i++)
+		for (NULL; line_vector_.at(i) != ("[/" + static_cast<std::string>(group) + "]"); i++)
 		{
 			if (line_vector_.at(i).find(name) != std::string::npos && line_vector_.at(i).find(":") != std::string::npos)
 				return i; // Yes, return line
