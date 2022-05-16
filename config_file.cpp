@@ -7,10 +7,10 @@ config_file::config_file(const std::string& file)
 
 	line_vector_ = {""};
 	
-	// Config Datei öffnen
+	// Open config file
 	fstream_.open(file, std::fstream::in);
 
-	// Erfolgreich?
+	// Did it work?
 	if (fstream_.is_open())
 	{
 		current_state_ = state::opened;
@@ -20,13 +20,13 @@ config_file::config_file(const std::string& file)
 	{
 		current_state_ = state::closed;
 
-		// Config erstellen
+		// Create config file
 		std::fstream tmp;
 		tmp.open(file, std::fstream::out);
 		tmp << std::flush;
 		tmp.close();
 
-		// Erneut versuchen
+		// Retry
 		this->open(file);
 	}
 }
@@ -42,19 +42,19 @@ std::vector<std::string> config_file::get_line_vector()
 
 bool config_file::file_valid(const std::string& file)
 {
-	// Datei temporär öffnen
+	// Open file temporary
 	config_file tmp(file);
 
-	// Zeilen
+	// Get lines
 	const std::vector<std::string> line_vector = tmp.get_line_vector();
 
-	// Automaten
+	// really basic DEA
 	std::vector<char> basic_dea;
 	
-	// Alle Zeilen überprüfen
+	// Check all lines
 	for(auto& l : line_vector)
 	{
-		// Gruppe wird geöffnet
+		// Group opened
 		if (l.find('[') != std::string::npos &&
 			l.find('/') == std::string::npos &&
 			l.find(']') != std::string::npos)
@@ -62,7 +62,7 @@ bool config_file::file_valid(const std::string& file)
 			basic_dea.push_back('[');
 		}
 
-		// Gruppe wird geschlossen
+		// Group closed
 		else if (l.find('[') != std::string::npos &&
 			l.find('/') != std::string::npos &&
 			l.find(']') != std::string::npos)
@@ -72,19 +72,19 @@ bool config_file::file_valid(const std::string& file)
 			basic_dea.pop_back();
 		}
 
-		// fehlerhaftes Attribut
+		// Attribute without group - ERROR
 		else if(l.find(':') == std::string::npos && !l.empty())
 			basic_dea.push_back('E');  
 
-		// Attribut
+		// Attribute
 		else if(l.find(':') != std::string::npos && basic_dea.empty())
 			basic_dea.push_back('E');
 	}
 
-	// tmp schließen
+	// Close temporary config
 	tmp.close();
 
-	// Auswertung
+	// return
 	if(basic_dea.empty())
 		return true;
 	return false;
@@ -94,30 +94,30 @@ bool config_file::file_valid(const std::string& file)
 
 bool config_file::open(const std::string& file)
 {
-	// Config Datei öffnen
+	// Open config file
 	fstream_.open(file, std::fstream::in);
 
-	// Erfolgreich?
+	// Did it work?
 	if (fstream_.is_open())
 	{
-		// Ja
+		// Yes
 		current_state_ = state::opened;
 		this->read_lines();
 		return true;
 	}
 	else
-		// Nein
+		// No
 		current_state_ = state::closed;
 	return false;
 }
 
 void config_file::save()
 {
-	// Datei zum schreiben neu öffnen
+	// Reopen config to write
 	fstream_.close();
 	fstream_.open(file_, std::ios::out | std::ios::trunc);
 	
-	// Alle Zeilen schreiben
+	// Push all lines
 	for (std::string& s : line_vector_)
 	{
 		if(line_vector_.back() == s)
@@ -126,12 +126,12 @@ void config_file::save()
 			fstream_ << translate_file(s) << std::endl;
 	}
 
-	// Schließen
+	// Close stream
 	fstream_.close();
-	current_state_ = state::closed; // STATE ändern
+	current_state_ = state::closed; // change state
 
-	// Neu öffnen
-	if(this->open(file_)) current_state_ = state::opened; // Wieder geöffnet
+	// Reopen file
+	if(this->open(file_)) current_state_ = state::opened;
 }
 
 void config_file::close()
@@ -142,10 +142,10 @@ void config_file::close()
 	// save
 	this->save();
 
-	// m_fstream schließen
+	// close m_fstream
 	fstream_.close();
 
-	// STATE ändern
+	// change state
 	current_state_ = state::closed;
 }
 
@@ -153,31 +153,31 @@ void config_file::close()
 
 bool config_file::write(const std::string& name, const std::string& value, const std::string& group)
 {
-	// Config offen?
+	// Is the config file opened?
 	if (current_state_ == state::closed)
-		return false; // Nein
-	// Ja
+		return false; // No
+	// Yes
 
-	// Gibt es das Attribut in der Gruppe schon?
+	// Does the attribute in the group exist?
 	int i = this->exists(name, group);
 	if (i != -1)
-		// Ja, also Zeile ersetzen
+		// Yes, replace line
 		line_vector_.at(i).replace(name.size() + 3, line_vector_.at(i).size()-(name.size() + 3), value);
-	else // Nein
+	else // No
 	{
-		// Gibt es die Gruppe überhaupt?
+		// Does the group exist?
 		i = this->exists(group);
-		const std::string tmp = name + ":/l" + value; // Neue Zeile, zwischengespeichert
+		const std::string tmp = name + ":/l" + value;
 		if (i != -1)
 		{
-			// Neue Zeile einfügen
+			// Insert new line
 			line_vector_.insert(line_vector_.begin() + i + 1, tmp);
 
 			return true;
 		}
 		else
 		{
-			// Neue Gruppe einfügen
+			// Create new group
 			line_vector_.insert(line_vector_.end(), "[" + group + "]");
 			line_vector_.insert(line_vector_.end(), tmp);
 			line_vector_.insert(line_vector_.end(), "[/" + group + "]");
@@ -187,17 +187,17 @@ bool config_file::write(const std::string& name, const std::string& value, const
 		}
 	}
 
-	// Hat nicht geklappt
+	// Didnt work
 	return false;
 }
 
 bool config_file::write(const std::string& name, const std::string& value)
 {
-	// Config offen?
+	// Is the config file opened?
 	if (current_state_ == state::closed)
-		return false; // Nein
+		return false; // No
 
-	// Gebe Rückgabewert von write zurück
+	// return
 	return this->write(name, value, "default");
 }
 
@@ -205,11 +205,11 @@ bool config_file::write(const std::string& name, const std::string& value)
 
 std::string config_file::get(const std::string& name, const std::string& group)
 {
-	// Gibt es Attribut & Gruppe überhaupt?
-	const int i = this->exists(name, group); // Zeile zwischenspeichern
-	if (i == -1) return ""; // Nein
+	// Does attribute and group exist?
+	const int i = this->exists(name, group);
+	if (i == -1) return ""; // No
 	
-	// Ja, Value zurückgeben
+	// Yes return value
 	return line_vector_.at(i).substr(name.size() + 3, line_vector_.at(i).size() - (name.size() + 3));
 }
 
@@ -222,10 +222,10 @@ std::string config_file::get(const std::string& name)
 
 void config_file::remove(const std::string& name, const std::string& group)
 {
-	// Exestiert Attribut und Gruppe überhaupt?
+	// Does attribute and group exist?
 	const int i = this->exists(name, group);
 	if (i != -1)
-		// Line rauslöschen
+		// Delete line
 		line_vector_.erase(line_vector_.begin() + i, line_vector_.begin() + i + 1);
 }
 
@@ -243,42 +243,42 @@ void config_file::remove(const std::string& name)
 
 void config_file::remove(const std::string& group, const bool move)
 {
-	// Exestiert die Gruppe überhaupt?
+	// Does group exist?
 	int i = this->exists(group);
 	int j = i;
 
-	if (i != -1) // Ja
+	if (i != -1) // Yes
 	{
-		// Alles in default verschieben?
+		// Move everything to default?
 		if (move) 
 		{
-			// Wo ist die default Gruppe?
+			// Where is the default group?
 			const int d = this->exists("default");
 
-			// Alle Zeilen verschieben
-			i++; // Will mit Attributen starten, nicht mit Gruppen Header
+			// Move all lines
+			i++; // Otherwise it moves the header of the group [XXX]
 			while (line_vector_.at(i) != ("[/" + group + "]"))
 			{
-				// Zeile einfügen
+				// Insert line
 				line_vector_.insert(line_vector_.begin() + d + 1, line_vector_.at(i));
 
-				i = this->exists(group) + 1; // Zeilen verschieben sich
+				i = this->exists(group) + 1; // Lines moved
 
-				// Zeile löschen
+				// Delete line
 				line_vector_.erase(line_vector_.begin() + i, line_vector_.begin() + i + 1);
 
-				i = this->exists(group) + 1; // Zeilen verschieben sich
+				i = this->exists(group) + 1; // Lines moved
 			}
 
-			// Gruppe löschen
+			// Delete group
 			this->remove(group, false);
 		}
 		else
 		{
-			// Nein
+			// No
 			while (line_vector_.at(j) != ("[/" + group + "]"))
 				j++;
-			line_vector_.erase(line_vector_.begin() + i, line_vector_.begin() + j + 1); // Zeilen löschen
+			line_vector_.erase(line_vector_.begin() + i, line_vector_.begin() + j + 1); // Delete line
 		}
 	}
 }
@@ -295,13 +295,13 @@ void config_file::move(const std::string& name, const std::string& old_group, co
 {
 	if (this->exists(name, old_group) != -1)
 	{
-		// Wert speichern
+		// Save value
 		const std::string value = this->get(name, old_group);
 
-		// Zeile löschen
+		// Delete line
 		this->remove(name, old_group);
 
-		// Zeile einfügen
+		// Insert line
 		this->write(name, value, new_group);
 	}
 }
@@ -316,33 +316,33 @@ void config_file::move(const std::string& name, const std::string& new_group)
 
 int config_file::exists(const std::string& group)
 {
-	int i = 0;	// Aktuelle Zeile
+	int i = 0;	// Current line
 	for (std::string& s : line_vector_)
 	{
-		// Exestiert die Gruppe?
+		// Does the group exist?
 		if (s == ("[" + group + "]"))
 			return i;
-		i++; // Nächste Zeile
+		i++; // Next line
 	}
 	return -1;
 }
 
 int config_file::exists(const std::string& name, const std::string& group)
 {
-	int i = this->exists(group);	// Aktuelle Zeile
+	int i = this->exists(group);	// Current line
 
-	// Exestiert die Gruppe?
+	// Does the group exist?
 	if (i != -1)
 	{
-		// Ja, exestiert Attribut?
+		// Yes, does the attribute exist?
 		for (NULL; line_vector_.at(i) != ("[/" + group + "]"); i++)
 		{
 			if (line_vector_.at(i).find(name) != std::string::npos && line_vector_.at(i).find(":") != std::string::npos)
-				return i; // Ja, Zeile zurückgeben
+				return i; // Yes, return line
 		}
 	}
 
-	// Exestiert nicht, Fehler zurückgeben
+	// No, return error
 	return -1;
 }
 
@@ -350,20 +350,20 @@ int config_file::exists(const std::string& name, const std::string& group)
 
 void config_file::read_lines()
 {
-	// Config offen?
+	// Is the config file opened?
 	if (current_state_ == state::opened)
 	{
-		// Zum Anfang der Datei springen
+		// Jump to top of file
 		fstream_.clear();
 		fstream_.seekg(std::fstream::beg);
 
-		// Liste leeren
+		// Clear vector
 		line_vector_.clear();
 
-		// Jede Zeile einlesen
-		std::string stringGL;			// Braucht getline();
+		// Read lines
+		std::string stringGL;			// needed for getline();
 		while (std::getline(fstream_, stringGL))
-			// Zu Liste hinzufügen
+			// push into vector
 			line_vector_.push_back(translate_code(stringGL));
 	}
 }
@@ -372,18 +372,18 @@ void config_file::read_lines()
 
 std::string config_file::translate_code(const std::string& line)
 {
-	std::string end; // Finaler String
+	std::string end; // return string
 
 	/* 
-	* Leerzeichen  : /l
-	* '#'          : rauslöschen
-	* ':'		   : bleibt
+	* space		   : /l
+	* '#'          : gets deleted
+	* ':'		   : stays
 	*/
 	for (const char c : line)
 	{
 		switch (c)
 		{
-			// Leerzeichen
+			// space
 			case(' '):
 				end += "/l";
 				break;
@@ -392,14 +392,14 @@ std::string config_file::translate_code(const std::string& line)
 			case('#'):
 				break;
 
-			// Alle anderen Zeichen
+			// any other character
 			default:
 				end += c;
 				break;
 		}
 	}
 
-	// Zurückgeben
+	// return
 	return end;
 }
 
@@ -407,14 +407,14 @@ std::string config_file::translate_file(const std::string& line)
 {
 	/*
 	* /l  : " "
-	* ':' : bleibt
+	* ':' : stays
 	*/
 	std::string tmp = line;
-	const int i = static_cast<int>(tmp.find("/l")); // Char wo '/' steht
+	const int i = static_cast<int>(tmp.find("/l"));
 	if (i != static_cast<int>(std::string::npos))
-		tmp.replace(i, 2, " "); // '/l' durch " " ersetzen
+		tmp.replace(i, 2, " "); // replace '/l' with " "
 
-	// String zurückgeben
+	// return
 	return tmp;
 }
 
@@ -422,7 +422,7 @@ std::string config_file::translate_file(const std::string& line)
 
 void config_file::smooth()
 {
-	// Alle leeren zeilen löschen
+	// Delete all empty lines
 	for (int i = 0; i < static_cast<int>(line_vector_.size()); i++)
 		if (line_vector_.at(i).empty())
 		{
@@ -430,7 +430,7 @@ void config_file::smooth()
 			i--;
 		}
 
-	// Nach Abschluss jeder Gruppe Zeile einfügen
+	// Insert empty line after every group [/XXX]
 	for (int i = 0; i < static_cast<int>(line_vector_.size()) && line_vector_.at(i) != line_vector_.back(); i++)
 		if (line_vector_.at(i).find("[/") != std::string::npos)
 		{
