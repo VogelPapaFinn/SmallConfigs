@@ -22,7 +22,7 @@ $ #include "config_file.h"
 
 The lib is simple to use and all of the functions are self-explanatory. Look at the DOCUMENTATION.md file for further information.
 
-``
+```
 $ config_file c("config.ini")
 
 $ c.write("att1", "value", "group")
@@ -32,7 +32,7 @@ $ c.get("att1")
 $ c.get("att1", "root")
 
 $ c.file_valid("config.ini")
-``
+```
 
 ### Features
 
