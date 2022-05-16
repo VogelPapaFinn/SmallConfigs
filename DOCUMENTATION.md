@@ -38,8 +38,8 @@
     void move(const std::string& name, const std::string& old_group, const std::string& new_group);
     void move(const std::string& name, const std::string& new_group);
 
-    int exists(const std::string& group);
-    int exists(const std::string& name, const std::string& group);
+    int find(const std::string& group);
+    int find(const std::string& name, const std::string& group);
   </ul>
 
   Still not enough? Then scroll further and take a look at the descriptions. *Hint* They are included in the source file.
@@ -155,14 +155,14 @@
 
 
 
-	// exists
+	// find
 	// Checks if the group 'group' exists.
 	// Returns the number of the line or '-1' if it does not exist.
-	int exists(const std::string& group);
+	int find(const std::string& group);
 
-	// exists
+	// find
 	// Checks if the attribute 'name' in the group 'group' exists.
 	// Returns the number of the line or '-1' if it does not exist.
-	int exists(const std::string& name, const std::string& group);
+	int find(const std::string& name, const std::string& group);
   </ul>
 

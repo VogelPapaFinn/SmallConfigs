@@ -117,15 +117,15 @@ public:
 
 
 
-    /// exists
+    /// find
     /// Checks if the group 'group' exists.
     /// Returns the number of the line or '-1' if it does not exist.
-    int exists(std::string_view group);
+    int find(std::string_view group);
     
-    /// exists
+    /// find
     /// Checks if the attribute 'name' in the group 'group' exists.
     /// Returns the number of the line or '-1' if it does not exist.
-    int exists(std::string_view name, std::string_view group);
+    int find(std::string_view name, std::string_view group);
 
 private:
     void read_lines();												/// read all lines

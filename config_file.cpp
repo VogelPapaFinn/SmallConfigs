@@ -158,14 +158,14 @@ bool config_file::write(std::string_view name, std::string_view value, std::stri
 	// Yes
 
 	// Does the attribute in the group exist?
-	int i = this->exists(name, group);
+	int i = this->find(name, group);
 	if (i != -1)
 		// Yes, replace line
 		line_vector_.at(i).replace(name.size() + 3, line_vector_.at(i).size()-(name.size() + 3), value);
 	else // No
 	{
 		// Does the group exist?
-		i = this->exists(group);
+		i = this->find(group);
 		const std::string tmp = static_cast<std::string>(name) + ":/l" + static_cast<std::string>(value);
 		if (i != -1)
 		{
@@ -205,7 +205,7 @@ bool config_file::write(std::string_view name, std::string_view value)
 std::string config_file::get(std::string_view name, std::string_view group)
 {
 	// Does attribute and group exist?
-	const int i = this->exists(name, group);
+	const int i = this->find(name, group);
 	if (i == -1) return ""; // No
 	
 	// Yes return value
@@ -222,7 +222,7 @@ std::string config_file::get(std::string_view name)
 void config_file::remove(std::string_view name, std::string_view group)
 {
 	// Does attribute and group exist?
-	const int i = this->exists(name, group);
+	const int i = this->find(name, group);
 	if (i != -1)
 		// Delete line
 		line_vector_.erase(line_vector_.begin() + i, line_vector_.begin() + i + 1);
@@ -243,7 +243,7 @@ void config_file::remove(std::string_view name)
 void config_file::remove(std::string_view group, const bool move)
 {
 	// Does group exist?
-	int i = this->exists(group);
+	int i = this->find(group);
 	int j = i;
 
 	if (i != -1) // Yes
@@ -252,7 +252,7 @@ void config_file::remove(std::string_view group, const bool move)
 		if (move) 
 		{
 			// Where is the default group?
-			const int d = this->exists("default");
+			const int d = this->find("default");
 
 			// Move all lines
 			i++; // Otherwise it moves the header of the group [XXX]
@@ -261,12 +261,12 @@ void config_file::remove(std::string_view group, const bool move)
 				// Insert line
 				line_vector_.insert(line_vector_.begin() + d + 1, line_vector_.at(i));
 
-				i = this->exists(group) + 1; // Lines moved
+				i = this->find(group) + 1; // Lines moved
 
 				// Delete line
 				line_vector_.erase(line_vector_.begin() + i, line_vector_.begin() + i + 1);
 
-				i = this->exists(group) + 1; // Lines moved
+				i = this->find(group) + 1; // Lines moved
 			}
 
 			// Delete group
@@ -292,7 +292,7 @@ void config_file::remove_from_group(std::string_view name, std::string_view old_
 
 void config_file::move(std::string_view name, std::string_view old_group, std::string_view new_group)
 {
-	if (this->exists(name, old_group) != -1)
+	if (this->find(name, old_group) != -1)
 	{
 		// Save value
 		const std::string value = this->get(name, old_group);
@@ -313,7 +313,7 @@ void config_file::move(std::string_view name, std::string_view new_group)
 
 
 
-int config_file::exists(std::string_view group)
+int config_file::find(std::string_view group)
 {
 	int i = 0;	// Current line
 	for (std::string& s : line_vector_)
@@ -326,9 +326,9 @@ int config_file::exists(std::string_view group)
 	return -1;
 }
 
-int config_file::exists(std::string_view name, std::string_view group)
+int config_file::find(std::string_view name, std::string_view group)
 {
-	int i = this->exists(group);	// Current line
+	int i = this->find(group);	// Current line
 
 	// Does the group exist?
 	if (i != -1)
