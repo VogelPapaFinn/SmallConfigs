@@ -1,6 +1,6 @@
 ﻿/* 
 * author:  VogelPapaFinn
-* version: 2.02-unstable
+* version: 2.02
 */
 
 #pragma once
