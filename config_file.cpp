@@ -168,14 +168,14 @@ bool config_file::write(const std::string& name, const std::string& value, const
 	// Yes
 
 	// Does the attribute in the group exist?
-	int i = this->find(name, group);
+	int i = this->find(name, group).value_or(-1);
 	if (i != -1)
 		// Yes, replace line
 		line_vector_.at(i).replace(name.size() + 3, line_vector_.at(i).size()-(name.size() + 3), value);
 	else // No
 	{
 		// Does the group exist?
-		i = this->find(group);
+		i = this->find(group).value_or(-1);
 		const std::string tmp = name + ":/l" + value;
 		if (i != -1)
 		{
@@ -202,16 +202,16 @@ bool config_file::write(const std::string& name, const std::string& value, const
 
 
 
-std::string config_file::get(const std::string& name)
+std::optional<std::string> config_file::get(const std::string& name) const
 {
-	return get(name, "default");
+	return get(name, "default").value_or("");
 }
 
-std::string config_file::get(const std::string& name, const std::string& group)
+std::optional<std::string> config_file::get(const std::string& name, const std::string& group) const
 {
 	// Does attribute and group exist?
-	const int i = this->find(name, group);
-	if (i == -1) return ""; // No
+	const int i = this->find(name, group).value_or(-1);
+	if (i == -1) return std::nullopt; // No
 	
 	// Yes return value
 	return line_vector_.at(i).substr(name.size() + 3, line_vector_.at(i).size() - (name.size() + 3));
@@ -222,7 +222,7 @@ std::string config_file::get(const std::string& name, const std::string& group)
 void config_file::remove(const std::string& name, const std::string& group)
 {
 	// Does attribute and group exist?
-	const int i = this->find(name, group);
+	const int i = this->find(name, group).value_or(-1);
 	if (i != -1)
 		// Delete line
 		line_vector_.erase(line_vector_.begin() + i, line_vector_.begin() + i + 1);
@@ -243,7 +243,7 @@ void config_file::remove(const std::string& name)
 void config_file::remove(const std::string& group, const bool move)
 {
 	// Does group exist?
-	int i = this->find(group);
+	int i = this->find(group).value_or(-1);
 	int j = i;
 
 	if (i != -1) // Yes
@@ -252,7 +252,7 @@ void config_file::remove(const std::string& group, const bool move)
 		if (move) 
 		{
 			// Where is the default group?
-			const int d = this->find("default");
+			const int d = this->find("default").value_or("");
 
 			// Move all lines
 			i++; // Otherwise it moves the header of the group [XXX]
@@ -261,12 +261,12 @@ void config_file::remove(const std::string& group, const bool move)
 				// Insert line
 				line_vector_.insert(line_vector_.begin() + d + 1, line_vector_.at(i));
 
-				i = this->find(group) + 1; // Lines moved
+				i = this->find(group).value_or(-1) + 1; // Lines moved
 
 				// Delete line
 				line_vector_.erase(line_vector_.begin() + i, line_vector_.begin() + i + 1);
 
-				i = this->find(group) + 1; // Lines moved
+				i = this->find(group).value_or(-1) + 1; // Lines moved
 			}
 
 			// Delete group
@@ -295,7 +295,7 @@ void config_file::move(const std::string& name, const std::string& old_group, co
 	if (this->find(name, old_group) != -1)
 	{
 		// Save value
-		const std::string value = this->get(name, old_group);
+		const std::string value = this->get(name, old_group).value_or("");
 
 		// Delete line
 		this->remove(name, old_group);
@@ -313,22 +313,22 @@ void config_file::move(const std::string& name, const std::string& new_group)
 
 
 
-int config_file::find(const std::string& group)
+std::optional<int> config_file::find(const std::string_view group) const
 {
-	int i = 0;	// Current line
-	for (std::string& s : line_vector_)
+	auto const itr = std::ranges::find_if(line_vector_, [&](std::string_view s)
 	{
-		// Does the group exist?
-		if (s == ("[" + group + "]"))
-			return i;
-		i++; // Next line
-	}
-	return -1;
+		return s.starts_with('[') && s.ends_with(']') && s.substr(1, s.size() - 2) == group;
+	});
+
+	// Did it find something?
+	if (itr != line_vector_.end())
+		return std::distance(std::begin(line_vector_), itr);	// Yes, return the distance/line number
+	return std::nullopt;	// Nope, return nothing
 }
 
-int config_file::find(const std::string& name, const std::string& group)
+std::optional<int> config_file::find(const std::string& name, const std::string& group) const
 {
-	int i = this->find(group);	// Current line
+	auto i = this->find(group).value_or(-1);	// Current line
 
 	// Does the group exist?
 	if (i != -1)

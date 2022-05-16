@@ -8,6 +8,7 @@
 #include<fstream>
 #include<string>
 #include<vector>
+#include<optional>
 
 /*
 * Hint:
@@ -75,12 +76,12 @@ public:
     /// get
     /// Returns the value of the attribute 'name' in the group 'group'
     /// as std::string. Have fun with casting! :)
-    std::string get(const std::string& name, const std::string& group);
+    [[nodiscard]] std::optional<std::string> get(const std::string& name, const std::string& group) const;
     
     /// get
     /// Returns the value of the attribute 'name' in the group default
     /// as std::string. Have fun with casting! :)
-    std::string get(const std::string& name);
+    [[nodiscard]] std::optional<std::string> get(const std::string& name) const;
 
     
 
@@ -120,12 +121,12 @@ public:
     /// find
     /// Checks if the group 'group' exists.
     /// Returns the number of the line or '-1' if it does not exist.
-    int find(const std::string& group);
+    [[nodiscard]] std::optional<int> find(std::string_view group) const;
     
     /// find
     /// Checks if the attribute 'name' in the group 'group' exists.
     /// Returns the number of the line or '-1' if it does not exist.
-    int find(const std::string& name, const std::string& group);
+    [[nodiscard]] std::optional<int> find(const std::string& name, const std::string& group) const;
 
 private:
     void read_lines();												// read all lines
