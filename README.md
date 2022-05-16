@@ -1,25 +1,25 @@
 # SmallConfigs
-Eine kleine Library die Config-Dateien ver- und bearbeiten kann.
+A small config to handle basic config files.
 
 # Features:
-- Individueller Dateiname und Dateiendung
-- Erstellen von Einträgen
-- Löschen von Einträgen
-- Gruppen
-- Verschieben von Einträgen zwischen zwei Gruppen
+- Individual filename and filetype [.cfg, .ini ...]
+- Creating & saving attributes with values
+- Deleting them
+- Groups - Everything is a group nobody is alone!
+- Moving attributes between groups
 
-# Kommende Features:
-- X
+# Future features:
+- nothing specific planned
 
 # Format:
-Ein Eintrag sieht in der Config immer so aus: <code>foo: bar</code>.
-Eine Gruppe immer so: 
+A attribute gets saved in the file like this: <code>foo: bar</code>.
+A group looks like this:
 <code>[Group]
 ...
 [/Group]</code>.
 
-# Kommentare:
-Diese Library unterstützt KEINE Kommentare in der Config Datei. Diese werden automatisch Entfernt!
+# Comments:
+This library does NOT accept comments of any type. They get removed eventually!
 
-# Dokumentation:
-In der DOCUMENTATION.md ist eine genauere Beschreibung zu den einzelnen Funktionen, deren Parameter und Rückgabewerte. Falls man mit den Beschreibungen im Code nicht zurecht kommt, kann man sich hier genau informieren!
+# Documentation:
+In the DOCUMENTATION.md you can find descriptions to any public funtion. These are contained in the Header file too!

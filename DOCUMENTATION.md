@@ -1,127 +1,165 @@
-<h2><font style="font-size:80px">Wie genau benutze ich die Library?</font></h2>
+<h2><font style="font-size:80px">How do I get this lib running?</font></h2>
 
 <p>
-  Das ist eigentlich ziemlich einfach, du musst die <i>CConfigFile.hpp</i> und <i>CConfigFile.cpp</i> in dein Projekt laden.   
-  Wenn du sie nun benutzen möchtest, musst du die <i>CConfigFile.hpp</i> in deine Quelldatei einbinden: 
-  <br/><code>#include "CConfigFile.hpp"</code> [Als Beispiel]
+  This is quite easy. Just download the <i>config_file.h</i> and <i>config_file.cpp</i> file and put them into your solution.
+  Then just include the header-file like you always do:
+  <br/><code>#include "config_file.h"</code>
 </p>
 
-<h2><font style="font-size:80px">Wie verwende ich die Library in Code Form?</font></h2>
+<h2><font style="font-size:80px">How do I use it?</font></h2>
 
 <p>
-  Das ist genau so einfach, denn die <i>CConfigFile.hpp</i> bietet akutell 15 Funktionen (überladene mitgezählt):
+  It's really simple and self-explanatory. Just take a look at the methods and their name. Is it really that hard?
+  
   <ul>
-	  
-    CConfigFile(std::string pFile)
-	  
-    bool open(std::string pFile)
-    void save()
-    void close()
-	  
-    bool write(std::string pName, std::string pValue)
-    bool write(std::string pName, std::string pValue, std::string pGroup)
-	  
-    void remove(std::string pName, std::string pGroup)
-    void remove(std::string pName, const char* pGroup)
-    void remove(std::string pName)
-    void remove(std::string pGroup, bool pMove)
-    void removeFromGroup(std::string pName, std::string pOldGroup)
-	  
-    void move(std::string pName, std::string pOldGroup, std::string pNewGroup)
-    void move(std::string pName, std::string pNewGroup)
-	  
-    std::string get(std::string pName, std::string pGroup)
-    std::string get(std::string pName)
-	  
-    Eine genaue Beschreibung zu den Funktionen findest du weiter unten.
+  
+    config_file(const std::string& file);
+
+    std::vector<std::string> get_line_vector();
+
+    static bool file_valid(const std::string& file);
+	
+    bool open(const std::string& file);
+    void save();
+    void close();
+
+    bool write(const std::string& name, const std::string& value);
+    bool write(const std::string& name, const std::string& value, const std::string& group);
+
+    std::string get(const std::string& name, const std::string& group);
+    std::string get(const std::string& name);
+
+    void remove(const std::string& name, const std::string& group);
+    void remove(const std::string& name, const char* group);
+    void remove(const std::string& name);
+    void remove(const std::string& group, bool move);
+    void remove_from_group(const std::string& name, const std::string& old_group);
+
+    void move(const std::string& name, const std::string& old_group, const std::string& new_group);
+    void move(const std::string& name, const std::string& new_group);
+
+    int exists(const std::string& group);
+    int exists(const std::string& name, const std::string& group);
   </ul>
-  <h2><font style="font-size:80px">Funktionen Beschreibung - Auffindbar im Sourcecode</font></h2>
+  Still not enough? Then scroll further and take a look at the descriptions. *Hint* They are included in the source file.
+  
+  <h2><font style="font-size:80px">The methods and what they do</font></h2>
   <br/>
   <ul>
-	
+
 	/* 
 	* author:  VogelPapaFinn
-	* version: 2.0-unstable
+	* version: 2.1-unstable
 	*/
 
-	// Wenn einem Attribut keine Gruppe zugewiesen wird, wird es automatisch der Gruppe "default" zugewiesen.
-	// Genau genommen gibt es keine gruppenlose Attribute. Sie können vom Anwender aber so behandelt werden.
+	/*
+	 * Hint:
+	 * There are no attributes without a group. You cand find them in the [default] group.
+	 * But you dont need to care about this, just handle them like they dont have a group.
+	 * The lib does the job there!
+	 */
 
 
 	// Constructor
-	//  Öffnet die Datei 'pFile' oder legt eine an, falls noch keine exestiert.
-	CConfigFile::CConfigFile(std::string pFile);
-	
-	
-	
+	// Opens the file 'file' or creates it, if it does not exists.
+	config_file(const std::string& file);
+
+
+
+	// get_line_vector
+	// Returns the vector that contains the lines of the file you just opened.
+	std::vector<std::string> get_line_vector();
+
+
+
+	// file_valid
+	// Checks if the 'file' is working.
+	// Returns 'true' if it the file doesnt contain any errors.
+	static bool file_valid(const std::string& file);
+
+
+
 	// open
-	// Öffnet die Datei 'pFile', falls diese noch nicht exestiert wird KEINE angelegt.
-	// Gibt 'true' zurück, wenn erfolgreich
-	bool CConfigFile::open(std::string pFile);
-	
+	// Opens the file 'file' but does NOT create it if it doesnt exist.
+	// Returns 'true' if successful.
+	bool open(const std::string& file);
+
 	// save
-	// Speichert alle Änderungen in der Datei
-	void CConfigFile::save();
-	
+	// Saves everything in the file.
+	void save();
+
 	// close
-	// Löscht alle unnötigen leeren Zeilen, Speichert die Datei und schließt sie
-	void CConfigFile::close();
-	
-	
-	
-	// write
-	// Schreibt das Attribut 'pName' mit dem Wert 'pValue' in die Gruppe 'pGroup'.
-	// Falls es noch keine exestiert wird eine erstellt.
-	// Gibt 'true' zurück, wenn erfolgreich
-	bool CConfigFile::write(std::string pName, std::string pValue, std::string pGroup;
-	
-	// write
-	// Schreibt das Attribut 'pName' mit dem Wert 'pValue' in die Gruppe "default"
-	// Gibt 'true' zurück, wenn erfolgreich
-	bool CConfigFile::write(std::string pName, std::string pValue);
-	
-	
-	
-	// get
-	// Liest Wert von Attribut 'pName' in der Gruppe 'pGroup' aus
-	// Gibt Wert als 'std::string' zurück
-	std::string CConfigFile::get(std::string pName, std::string pGroup);
-	
-	// get
-	// Liest Wert von Attribut 'pName' in der Gruppe "default" aus
-	// Gibt Wert als 'std::string' zurück
-	std::string CConfigFile::get(std::string pName);
-	
+	// Saves the file and closes the stream.
+	void close();
 
 
+
+	// write
+	// Writes the attribute 'name' in the group 'group' and assigns the value 'value'.
+	// Creates a new group if 'group' does not exist.
+	// Returns 'true' if successful.
+	bool write(const std::string& name, const std::string& value);
+
+	// write
+	// Writes the attribute 'name' in the group default and assigns the value 'value'.
+	// Returns 'true' if successful.
+	bool write(const std::string& name, const std::string& value, const std::string& group);
+
+
+
+	// get
+	// Returns the value of the attribute 'name' in the group 'group'
+	// as std::string. Have fun with casting! :)
+	std::string get(const std::string& name, const std::string& group);
+
+	// get
+	// Returns the value of the attribute 'name' in the group default
+	// as std::string. Have fun with casting! :)
+	std::string get(const std::string& name);
+
+
+
 	// remove
-	// Löscht Attribut 'pName' aus Gruppe 'pGroup'
-	void CConfigFile::remove(std::string pName, std::string pGroup);
-	
+	// Removes the attribute 'name' from the group 'group'.
+	void remove(const std::string& name, const std::string& group);
+
 	// remove
-	// Löscht Attribut 'pName' aus Gruppe 'pGroup'
-	void CConfigFile::remove(std::string pName, const char* pGroup);
-	
+	// Removes the attribute 'name' from the group 'group'.
+	void remove(const std::string& name, const char* group);
+
 	// remove
-	// Löscht Attribut 'pName' aus Gruppe "default"
-	void CConfigFile::remove(std::string pName);
-	
+	// Removes the attribute 'name' from the group default.
+	void remove(const std::string& name);
+
 	// remove
-	// Löscht Gruppe 'pGroup'. Wenn 'pMove' true ist, werden alle Attribute der Gruppe in "default" verschoben
-	void CConfigFile::remove(std::string pGroup, bool pMove);
-	
-	// remove
-	// Löscht Attribut 'pName' aus Gruppe 'pGroup' und fügt es in die Gruppe "default" ein
-	void CConfigFile::removeFromGroup(std::string pName, std::string pOldGroup);
-	
-	
-	
+	// Removes the group 'group'. 'move' indicates if the attributes in the group
+	// should get moved to the default group.
+	void remove(const std::string& group, bool move);
+
+	// remove_from_group
+	// Removes the attribute 'name' from the group 'group'.
+	void remove_from_group(const std::string& name, const std::string& old_group);
+
+
+
 	// move
-	// Verschiebt Attribut 'pName' aus der Gruppe 'pOldGroup' in die Gruppe 'pNewGroup'
-	void CConfigFile::move(std::string pName, std::string pOldGroup, std::string pNewGroup);
-	
+	// Moves the attribute 'name' from the group 'old_group' to the group 'new_group'.
+	void move(const std::string& name, const std::string& old_group, const std::string& new_group);
+
 	// move
-	// Verschiebt Attribut 'pName' aus der Gruppe "default" in die Gruppe 'pNewGroup'
-	void CConfigFile::move(std::string pName, std::string pNewGroup)
+	// Moves the attribute 'name' from the group default to the group 'new_group'.
+	void move(const std::string& name, const std::string& new_group);
+
+
+
+	// exists
+	// Checks if the group 'group' exists.
+	// Returns the number of the line or '-1' if it does not exist.
+	int exists(const std::string& group);
+
+	// exists
+	// Checks if the attribute 'name' in the group 'group' exists.
+	// Returns the number of the line or '-1' if it does not exist.
+	int exists(const std::string& name, const std::string& group);
   </ul>
 </p>
