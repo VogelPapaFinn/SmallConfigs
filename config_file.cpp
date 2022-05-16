@@ -1,15 +1,5 @@
 ﻿#include "config_file.h"
-/* 
-* author:  VogelPapaFinn
-* version: 2.0-unstable
-*/
 
-// Wenn einem Attribut keine Gruppe zugewiesen wird, wird es automatisch der Gruppe "default" zugewiesen.
-// Genau genommen gibt es keine gruppenlose Attribute. Sie können vom Anwender aber so behandelt werden.
-
-
-// Constructor
-// Öffnet die Datei 'file' oder legt eine an, falls noch keine exestiert.
 config_file::config_file(const std::string& file)
 {
 	file_ = file;
@@ -42,8 +32,6 @@ config_file::config_file(const std::string& file)
 
 
 
-// get_lines
-// Gibt die eingelesenen Zeilen zurück.
 std::vector<std::string> config_file::get_line_vector()
 {
 	return line_vector_;
@@ -51,8 +39,6 @@ std::vector<std::string> config_file::get_line_vector()
 
 
 
-// file_valid
-// Überprüft ob die Datei 'file' Fehler enthält. Falls nein, wird sie NICHT geöffnet.
 bool config_file::file_valid(const std::string& file)
 {
 	// Datei temporär öffnen
@@ -105,9 +91,6 @@ bool config_file::file_valid(const std::string& file)
 
 
 
-// open
-// Öffnet die Datei 'file', falls diese noch nicht exestiert wird KEINE angelegt.
-// Gibt 'true' zurück, wenn erfolgreich
 bool config_file::open(const std::string& file)
 {
 	// Config Datei öffnen
@@ -127,8 +110,6 @@ bool config_file::open(const std::string& file)
 	return false;
 }
 
-// save
-// Speichert alle Änderungen in der Datei
 void config_file::save()
 {
 	// Datei zum schreiben neu öffnen
@@ -152,8 +133,6 @@ void config_file::save()
 	if(this->open(file_)) current_state_ = state::opened; // Wieder geöffnet
 }
 
-// close
-// Löscht alle unnötigen leeren Zeilen, Speichert die Datei und schließt sie
 void config_file::close()
 {
 	// smooth
@@ -171,10 +150,6 @@ void config_file::close()
 
 
 
-// write
-// Schreibt das Attribut 'name' mit dem Wert 'value' in die Gruppe 'group'.
-// Falls es noch keine exestiert wird eine erstellt.
-// Gibt 'true' zurück, wenn erfolgreich
 bool config_file::write(const std::string& name, const std::string& value, const std::string& group)
 {
 	// Config offen?
@@ -215,9 +190,6 @@ bool config_file::write(const std::string& name, const std::string& value, const
 	return false;
 }
 
-// write
-// Schreibt das Attribut 'name' mit dem Wert 'value' in die Gruppe 'default'
-// Gibt 'true' zurück, wenn erfolgreich
 bool config_file::write(const std::string& name, const std::string& value)
 {
 	// Config offen?
@@ -230,9 +202,6 @@ bool config_file::write(const std::string& name, const std::string& value)
 
 
 
-// get
-// Liest Wert von Attribut 'name' in der Gruppe 'group' aus
-// Gibt Wert als std::string zurück
 std::string config_file::get(const std::string& name, const std::string& group)
 {
 	// Gibt es Attribut & Gruppe überhaupt?
@@ -243,9 +212,6 @@ std::string config_file::get(const std::string& name, const std::string& group)
 	return line_vector_.at(i).substr(name.size() + 3, line_vector_.at(i).size() - (name.size() + 3));
 }
 
-// get
-// Liest Wert von Attribut 'name' in der Gruppe 'default' aus
-// Gibt Wert als 'std::string' zurück
 std::string config_file::get(const std::string& name)
 {
 	return this->get(name, "default");
@@ -253,8 +219,6 @@ std::string config_file::get(const std::string& name)
 
 
 
-// remove
-// Löscht Attribut 'name' aus Gruppe 'group'
 void config_file::remove(const std::string& name, const std::string& group)
 {
 	// Exestiert Attribut und Gruppe überhaupt?
@@ -264,24 +228,18 @@ void config_file::remove(const std::string& name, const std::string& group)
 		line_vector_.erase(line_vector_.begin() + i, line_vector_.begin() + i + 1);
 }
 
-// remove
-// Löscht Attribut 'name' aus Gruppe 'group'
 void config_file::remove(const std::string& name, const char* group)
 {
 	// remove
 	this->remove(name, std::string(group));
 }
 
-// remove
-// Löscht Attribut 'name' aus Gruppe 'default'
 void config_file::remove(const std::string& name)
 {
 	// remove
 	this->remove(name, "default");
 }
 
-// remove
-// Löscht Gruppe 'group'. Wenn 'move' true ist, werden alle Attribute der Gruppe in 'default' verschoben
 void config_file::remove(const std::string& group, const bool move)
 {
 	// Exestiert die Gruppe überhaupt?
@@ -324,8 +282,6 @@ void config_file::remove(const std::string& group, const bool move)
 	}
 }
 
-// remove
-// Löscht Attribut 'name' aus Gruppe 'group' und fügt es in die Gruppe 'default' ein
 void config_file::remove_from_group(const std::string& name, const std::string& old_group)
 {
 	// move
@@ -334,8 +290,6 @@ void config_file::remove_from_group(const std::string& name, const std::string& 
 
 
 
-// move
-// Verschiebt Attribut 'name' aus der Gruppe 'old_group' in die Gruppe 'new_group'
 void config_file::move(const std::string& name, const std::string& old_group, const std::string& new_group)
 {
 	if (this->exists(name, old_group) != -1)
@@ -351,8 +305,6 @@ void config_file::move(const std::string& name, const std::string& old_group, co
 	}
 }
 
-// move
-// Verschiebt Attribut 'name' aus der Gruppe 'default' in die Gruppe 'new_group'
 void config_file::move(const std::string& name, const std::string& new_group)
 {
 	// move
@@ -360,9 +312,7 @@ void config_file::move(const std::string& name, const std::string& new_group)
 }
 
 
-// exists
-// Überprüft ob die Gruppe 'group' bereits exestiert
-// Wenn ja wird die Zeile zurückgegeben, ansonsten -1
+
 int config_file::exists(const std::string& group)
 {
 	int i = 0;	// Aktuelle Zeile
@@ -376,9 +326,6 @@ int config_file::exists(const std::string& group)
 	return -1;
 }
 
-// exists
-// Überprüft ob das Attribut 'name' in der Gruppe 'group' bereits exestiert
-// Wenn ja wird die Zeile zurückgegeben, ansonsten -1
 int config_file::exists(const std::string& name, const std::string& group)
 {
 	int i = this->exists(group);	// Aktuelle Zeile
