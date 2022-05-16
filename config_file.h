@@ -63,82 +63,82 @@ public:
     /// Writes the attribute 'name' in the group 'group' and assigns the value 'value'.
     /// Creates a new group if 'group' does not exist.
     /// Returns 'true' if successful.
-    bool write(std::string_view name, std::string_view value);
+    bool write(const std::string& name, const std::string& value);
     
     /// write
     /// Writes the attribute 'name' in the group default and assigns the value 'value'.
     /// Returns 'true' if successful.
-    bool write(std::string_view name, std::string_view value, std::string_view group);
+    bool write(const std::string& name, const std::string& value, const std::string& group);
     
 
 
     /// get
     /// Returns the value of the attribute 'name' in the group 'group'
     /// as std::string. Have fun with casting! :)
-    std::string get(std::string_view name, std::string_view group);
+    std::string get(const std::string& name, const std::string& group);
     
     /// get
     /// Returns the value of the attribute 'name' in the group default
     /// as std::string. Have fun with casting! :)
-    std::string get(std::string_view name);
+    std::string get(const std::string& name);
 
     
 
     /// remove
     /// Removes the attribute 'name' from the group 'group'.
-    void remove(std::string_view name, std::string_view group);
+    void remove(const std::string& name, const std::string& group);
     
     /// remove
     /// Removes the attribute 'name' from the group 'group'.
-    void remove(std::string_view name, const char* group);
+    void remove(const std::string& name, const char* group);
     
     /// remove
     /// Removes the attribute 'name' from the group default.
-    void remove(std::string_view name);
+    void remove(const std::string& name);
     
     /// remove
     /// Removes the group 'group'. 'move' indicates if the attributes in the group
     /// should get moved to the default group.
-    void remove(std::string_view group, bool move);
+    void remove(const std::string& group, bool move);
     
     /// remove_from_group
     /// Removes the attribute 'name' from the group 'group'.
-    void remove_from_group(std::string_view name, std::string_view old_group);
+    void remove_from_group(const std::string& name, const std::string& old_group);
 
-
-
+    
+    
     /// move
     /// Moves the attribute 'name' from the group 'old_group' to the group 'new_group'.
-    void move(std::string_view name, std::string_view old_group, std::string_view new_group);
+    void move(const std::string& name, const std::string& old_group, const std::string& new_group);
 
     /// move
     /// Moves the attribute 'name' from the group default to the group 'new_group'.
-    void move(std::string_view name, std::string_view new_group);
+    void move(const std::string& name, const std::string& new_group);
 
 
 
     /// find
     /// Checks if the group 'group' exists.
     /// Returns the number of the line or '-1' if it does not exist.
-    int find(std::string_view group);
+    int find(const std::string& group);
     
     /// find
     /// Checks if the attribute 'name' in the group 'group' exists.
     /// Returns the number of the line or '-1' if it does not exist.
-    int find(std::string_view name, std::string_view group);
+    int find(const std::string& name, const std::string& group);
 
 private:
-    void read_lines();												/// read all lines
+    void read_lines();												// read all lines
 
-    static std::string translate_code(const std::string& line);		/// Translates code to file
-    static std::string translate_file(const std::string& line);		/// Translates file to code
+    static std::string translate_code(const std::string& line);		// Translates code to file
+    static std::string translate_file(const std::string& line);		// Translates file to code
 
-    void smooth();													/// smothes the code
+    void smooth();													// smoothes the code
 
 
 
     std::string file_;
-    std::vector<std::string> line_vector_;							/// Contains all the lines from the file
-    state current_state_;											/// Current state
+    std::vector<std::string> line_vector_;							// Contains all the lines from the file
+    state current_state_;											// Current state
     std::fstream fstream_;
 };
