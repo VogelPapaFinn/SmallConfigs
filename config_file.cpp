@@ -285,7 +285,7 @@ void config_file::remove(std::string_view group, const bool move)
 void config_file::remove_from_group(std::string_view name, std::string_view old_group)
 {
 	// move
-	this->move(static_cast<std::string>(name), static_cast<std::string>(old_group), "default");
+	this->move(name, old_group, "default");
 }
 
 
