@@ -1,25 +1,53 @@
-# SmallConfigs
-A small config to handle basic config files.
+# Small Configs
 
-# Features:
-- Individual filename and filetype [.cfg, .ini etc.]
-- Creating & saving attributes with values
-- Deleting them
-- Groups - Everything is a group nobody is alone!
-- Moving attributes between groups
+With this C++ lib you can use basic configuration files. It is really easy to use and doesnt need to be compiled.
 
-# Future features:
-- nothing specific planned
+### Installation
 
-# Format:
-A attribute gets saved in the file like this: <code>foo: bar</code>.
-A group looks like this:
-<code>[Group]
-...
-[/Group]</code>.
+To use this lib just follow these really easy instructions:
 
-# Comments:
-This library does NOT accept comments of any type. They get removed eventually!
+```
+Download or clone the repo
+$ git clone https://github.com/VogelPapaFinn/SmallConfigs
 
-# Documentation:
-In the DOCUMENTATION.md you can find descriptions to any public function. These are contained in the Header file too!
+Now include these two files to your project:
+- config_file.h
+- config_file.cpp
+
+Include the header file where you need it
+$ #include "config_file.h"
+```
+
+### Usage
+
+The lib is simple to use and all of the functions are self-explanatory. Look at the DOCUMENTATION.md file for further information.
+
+```
+$ config_file c("config.ini")
+
+$ c.write("att1", "value", "group")
+$ c.write("foo", "bar", "root")
+
+$ c.get("att1")
+$ c.get("att1", "root")
+
+$ c.file_valid("config.ini")
+```
+
+### Features
+
+* Choose your own filename and datatype e.g. ``.ini`` or ``.cfg``
+* Group-System - currently everything belongs to a group
+* Basic operations
+  * adding attributes and values
+  * changing & deleting them
+  * creating & deleting groups
+  * moving attributes between groups
+
+### Planned Features
+
+Currently there are no plans for the future.If you want new features create a request or message me on discord.
+
+### Social Media - Contact
+
+* Discord: ``VogelPapa | Finn#0442``
