@@ -41,10 +41,13 @@
     int exists(const std::string& group);
     int exists(const std::string& name, const std::string& group);
   </ul>
+
   Still not enough? Then scroll further and take a look at the descriptions. *Hint* They are included in the source file.
-  
+
   <h2><font style="font-size:80px">The methods and what they do</font></h2>
+
   <br/>
+
   <ul>
 
 	/* 
@@ -162,4 +165,4 @@
 	// Returns the number of the line or '-1' if it does not exist.
 	int exists(const std::string& name, const std::string& group);
   </ul>
-</p>
+

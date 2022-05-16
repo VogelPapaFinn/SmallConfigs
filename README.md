@@ -22,4 +22,4 @@ A group looks like this:
 This library does NOT accept comments of any type. They get removed eventually!
 
 # Documentation:
-In the DOCUMENTATION.md you can find descriptions to any public funtion. These are contained in the Header file too!
+In the DOCUMENTATION.md you can find descriptions to any public function. These are contained in the Header file too!
