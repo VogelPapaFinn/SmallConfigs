@@ -129,12 +129,12 @@ public:
     [[nodiscard]] std::optional<int> find(const std::string& name, const std::string& group) const;
 
 private:
-    void read_lines();												// read all lines
+    void read_lines();												// Read all lines
 
     static std::string translate_code(const std::string& line);		// Translates code to file
     static std::string translate_file(const std::string& line);		// Translates file to code
 
-    void smooth();													// smoothes the code
+    void smooth();													// Smoothes the code
 
 
 
