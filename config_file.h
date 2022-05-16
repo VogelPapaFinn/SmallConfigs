@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include<fstream>
+#include<iosfwd>
 #include<string>
 #include<vector>
 

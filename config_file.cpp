@@ -1,4 +1,5 @@
 ﻿#include "config_file.h"
+#include <fstream>
 
 config_file::config_file(const std::string& file)
 {
