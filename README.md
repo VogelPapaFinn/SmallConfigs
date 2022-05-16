@@ -2,7 +2,7 @@
 A small config to handle basic config files.
 
 # Features:
-- Individual filename and filetype [.cfg, .ini ...]
+- Individual filename and filetype [.cfg, .ini etc.]
 - Creating & saving attributes with values
 - Deleting them
 - Groups - Everything is a group nobody is alone!
