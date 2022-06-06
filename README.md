@@ -14,7 +14,7 @@ Now include these two files to your project:
 - config_file.h
 - config_file.cpp
 
-Include the header file where you need it
+Include the header file where you want to use the lib:
 $ #include "config_file.h"
 ```
 
