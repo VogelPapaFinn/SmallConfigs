@@ -315,7 +315,7 @@ void config_file::move(const std::string& name, const std::string& new_group)
 
 std::optional<int> config_file::find(const std::string_view group) const
 {
-	auto const itr = std::ranges::find_if(line_vector_, [&](std::string_view s)
+	auto const itr = std::ranges::find_if(line_vector_, [&](const std::string_view s)
 	{
 		return s.starts_with('[') && s.ends_with(']') && s.substr(1, s.size() - 2) == group;
 	});
