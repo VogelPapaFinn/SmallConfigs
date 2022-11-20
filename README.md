@@ -14,7 +14,7 @@ Now include these two files to your project:
 - config_file.h
 - config_file.cpp
 
-Include the header file where you need it
+Include the header file where you want to use the lib:
 $ #include "config_file.h"
 ```
 
@@ -46,7 +46,7 @@ $ c.file_valid("config.ini")
 
 ### Planned Features
 
-Currently there are no plans for the future.If you want new features create a request or message me on discord.
+Currently there are no plans for the future. If you have any ideas to improve the lib create a issue or send me a message on discord.
 
 ### Social Media - Contact
 
