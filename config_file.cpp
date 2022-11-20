@@ -168,14 +168,14 @@ bool config_file::write(const std::string& name, const std::string& value, const
 	// Yes
 
 	// Does the attribute in the group exist?
-	int i = this->find(name, group).value_or(-1);
+	int i = this->find(name, group);
 	if (i != -1)
 		// Yes, replace line
 		line_vector_.at(i).replace(name.size() + 3, line_vector_.at(i).size()-(name.size() + 3), value);
 	else // No
 	{
 		// Does the group exist?
-		i = this->find(group).value_or(-1);
+		i = this->find(group);
 		const std::string tmp = name + ":/l" + value;
 		if (i != -1)
 		{
@@ -210,7 +210,7 @@ std::optional<std::string> config_file::get(const std::string& name) const
 std::optional<std::string> config_file::get(const std::string& name, const std::string& group) const
 {
 	// Does attribute and group exist?
-	const int i = this->find(name, group).value_or(-1);
+	const int i = this->find(name, group);
 	if (i == -1) return std::nullopt; // No
 	
 	// Yes return value
@@ -222,7 +222,7 @@ std::optional<std::string> config_file::get(const std::string& name, const std::
 void config_file::remove(const std::string& name, const std::string& group)
 {
 	// Does attribute and group exist?
-	const int i = this->find(name, group).value_or(-1);
+	const int i = this->find(name, group);
 	if (i != -1)
 		// Delete line
 		line_vector_.erase(line_vector_.begin() + i, line_vector_.begin() + i + 1);
@@ -243,7 +243,7 @@ void config_file::remove(const std::string& name)
 void config_file::remove(const std::string& group, const bool move)
 {
 	// Does group exist?
-	int i = this->find(group).value_or(-1);
+	int i = this->find(group);
 	int j = i;
 
 	if (i != -1) // Yes
@@ -252,7 +252,7 @@ void config_file::remove(const std::string& group, const bool move)
 		if (move) 
 		{
 			// Where is the default group?
-			const int d = this->find("default").value_or("");
+			const int d = this->find("default");
 
 			// Move all lines
 			i++; // Otherwise it moves the header of the group [XXX]
@@ -261,12 +261,12 @@ void config_file::remove(const std::string& group, const bool move)
 				// Insert line
 				line_vector_.insert(line_vector_.begin() + d + 1, line_vector_.at(i));
 
-				i = this->find(group).value_or(-1) + 1; // Lines moved
+				i = this->find(group) + 1; // Lines moved
 
 				// Delete line
 				line_vector_.erase(line_vector_.begin() + i, line_vector_.begin() + i + 1);
 
-				i = this->find(group).value_or(-1) + 1; // Lines moved
+				i = this->find(group) + 1; // Lines moved
 			}
 
 			// Delete group
@@ -313,7 +313,7 @@ void config_file::move(const std::string& name, const std::string& new_group)
 
 
 
-std::optional<int> config_file::find(const std::string_view group) const
+int config_file::find(const std::string_view group) const
 {
 	auto const itr = std::ranges::find_if(line_vector_, [&](const std::string_view s)
 	{
@@ -323,12 +323,12 @@ std::optional<int> config_file::find(const std::string_view group) const
 	// Did it find something?
 	if (itr != line_vector_.end())
 		return std::distance(std::begin(line_vector_), itr);	// Yes, return the distance/line number
-	return std::nullopt;	// Nope, return nothing
+	return -1;	// Nope, return nothing
 }
 
-std::optional<int> config_file::find(const std::string& name, const std::string& group) const
+int config_file::find(const std::string& name, const std::string& group) const
 {
-	auto i = this->find(group).value_or(-1);	// Current line
+	auto i = this->find(group);	// Current line
 
 	// Does the group exist?
 	if (i != -1)
@@ -409,8 +409,8 @@ std::string config_file::translate_file(const std::string& line)
 	* ':' : stays
 	*/
 	std::string tmp = line;
-	const int i = static_cast<int>(tmp.find("/l"));
-	if (i != static_cast<int>(std::string::npos))
+	const int i = tmp.find("/l");
+	if (i != std::string::npos)
 		tmp.replace(i, 2, " "); // replace '/l' with " "
 
 	// return
@@ -425,7 +425,7 @@ void config_file::smooth()
 	std::erase(line_vector_, "");
 
 	// Insert empty line after every group [/XXX]
-	for (int i = 0; i < static_cast<int>(line_vector_.size()) && line_vector_.at(i) != line_vector_.back(); i++)
+	for (int i = 0; i < line_vector_.size() && line_vector_.at(i) != line_vector_.back(); i++)
 		if (line_vector_.at(i).find("[/") != std::string::npos)
 		{
 			line_vector_.insert(line_vector_.begin() + i + 1, "");

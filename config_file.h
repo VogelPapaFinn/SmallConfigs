@@ -121,12 +121,12 @@ public:
     /// find
     /// Checks if the group 'group' exists.
     /// Returns the number of the line or '-1' if it does not exist.
-    [[nodiscard]] std::optional<int> find(std::string_view group) const;
+    int find(std::string_view group) const;
     
     /// find
     /// Checks if the attribute 'name' in the group 'group' exists.
     /// Returns the number of the line or '-1' if it does not exist.
-    [[nodiscard]] std::optional<int> find(const std::string& name, const std::string& group) const;
+    int find(const std::string& name, const std::string& group) const;
 
 private:
     void read_lines();												// Read all lines
