@@ -20,7 +20,7 @@ $ #include "config_file.h"
 
 ### Usage
 
-The lib is simple to use and all of the functions are self-explanatory. Look at the DOCUMENTATION.md file for further information.
+The lib is simple to use and all of the functions are self-explanatory. Look at the documentation file for further information.
 
 ```
 $ config_file c("config.ini")
