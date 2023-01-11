@@ -38,6 +38,7 @@ $ c.file_valid("config.ini")
 
 * Choose your own filename and datatype e.g. ``.ini`` or ``.cfg``
 * Group-System - currently everything belongs to a group
+* Lists are supported [basic atm]
 * Basic operations
   * adding attributes and values
   * changing & deleting them
@@ -46,7 +47,9 @@ $ c.file_valid("config.ini")
 
 ### Planned Features
 
-Currently there are no plans for the future. If you have any ideas to improve the lib create a issue or send me a message on discord.
+- Improved support for lists.
+
+If you have any ideas to improve the lib create a issue or send me a message on discord.
 
 ### Social Media - Contact
 
