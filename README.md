@@ -28,8 +28,15 @@ $ config_file c("config.ini")
 $ c.write("att1", "value", "group")
 $ c.write("foo", "bar", "root")
 
+$ c.write_list("List1", std::array<std::string, 3>{"1", "2", "3"})
+$ c.write_list("List1", std::vector<std::string>{"1", "2", "3"})
+$ c.write_list("List1", std::list<std::string>{"1", "2", "3"})
+
 $ c.get("att1")
 $ c.get("att1", "root")
+
+$ c.get_list_as_vector("List1")
+$ c.get_raw_list("List1")
 
 $ c.file_valid("config.ini")
 ```
